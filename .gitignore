@@ -1,0 +1,11 @@
+# Vercel
+.vercel
+
+# Dependencies
+node_modules/
+
+# Backup files
+*.bak
+
+# OS files
+.DS_Store
