@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics Deep Dive | CES 2026 | RedPeak Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg': { 'primary': '#000000', 'secondary': '#0a0a0a', 'tertiary': '#111111' },
+                        'accent': { 'orange': '#f97316', 'blue': '#3b82f6', 'green': '#10b981', 'purple': '#8b5cf6' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Manrope', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+            --text-muted: rgba(255, 255, 255, 0.3);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+        }
+        body { font-family: var(--font-body); background: #000; color: var(--text-primary); }
+        .font-display { font-family: var(--font-display); }
+        .font-mono { font-family: var(--font-mono); }
+        .text-hero { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; }
+        .text-h2 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.3; }
+        .text-h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); line-height: 1.4; }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+        .nav-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .product-card {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, rgba(249, 115, 22, 0.02) 100%);
+            border: 1px solid rgba(249, 115, 22, 0.15);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            border-color: rgba(249, 115, 22, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .boi-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.03) 100%);
+            border: 2px solid rgba(245, 158, 11, 0.4);
+        }
+
+        @media print { .no-print { display: none !important; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+        <nav class="fixed top-0 left-0 right-0 z-50 no-print" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-7 w-auto">
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="redpeak-pov.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                    <span>Our PoV</span>
+                </a>
+                <div class="relative group">
+                    <button class="nav-pill flex items-center gap-2" style="background: rgba(255,255,255,0.1);">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                        <span>Insights</span>
+                        <i data-lucide="chevron-down" class="w-3 h-3 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute top-full right-0 mt-2 py-2 min-w-[180px] rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" style="background: rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                        <a href="keynotes.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="mic" class="w-4 h-4"></i>
+                            <span>Keynote Intelligence</span>
+                        </a>
+                        <a href="electronics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="monitor" class="w-4 h-4"></i>
+                            <span>Electronics View</span>
+                        </a>
+                        <a href="odm.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="factory" class="w-4 h-4"></i>
+                            <span>ODM View</span>
+                        </a>
+                        <a href="innovation-awards.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="award" class="w-4 h-4"></i>
+                            <span>Innovation Awards</span>
+                        </a>
+                        <a href="sustainability.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="leaf" class="w-4 h-4"></i>
+                            <span>Sustainability</span>
+                        </a>
+                        <a href="automobile.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="car" class="w-4 h-4"></i>
+                            <span>Automobile</span>
+                        </a>
+                        <a href="healthcare.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+                            <span>Healthcare</span>
+                        </a>
+                        <a href="robotics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors bg-white/5" style="color: var(--text-primary);">
+                            <i data-lucide="bot" class="w-4 h-4"></i>
+                            <span>Robotics</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-[80vh] flex items-center justify-center relative overflow-hidden pt-20" style="background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);">
+        <div class="absolute inset-0 opacity-30">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl" style="background: rgba(249, 115, 22, 0.2);"></div>
+            <div class="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full blur-3xl" style="background: rgba(139, 92, 246, 0.15);"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+            <div class="flex items-center justify-center gap-3 mb-6">
+                <i data-lucide="bot" class="w-10 h-10 text-orange-500"></i>
+                <span class="text-orange-500 font-mono text-sm tracking-widest uppercase">Robotics Deep Dive</span>
+            </div>
+            <h1 class="font-display text-hero font-light mb-6" style="color: var(--text-primary);">
+                The <span class="text-orange-500">Physical AI</span> Awakening
+            </h1>
+            <p class="text-xl mb-8 max-w-3xl mx-auto" style="color: var(--text-secondary);">
+                CES 2026 Robotics shows <span class="text-orange-400 font-medium">3x Best of Innovation growth</span> (1→3) — signaling the category is ready for primetime. Humanoids, quadrupeds, and industrial automation converge.
+            </p>
+
+            <!-- Key Stats -->
+            <div class="flex flex-wrap justify-center gap-6 mb-12">
+                <div class="px-8 py-5 rounded-2xl text-center" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <div class="text-4xl font-light text-green-400 mb-1">3x</div>
+                    <div class="text-sm" style="color: var(--text-tertiary);">Best of Innovation Growth</div>
+                </div>
+                <div class="px-8 py-5 rounded-2xl text-center" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(249, 115, 22, 0.05) 100%); border: 1px solid rgba(249, 115, 22, 0.3);">
+                    <div class="text-4xl font-light text-orange-400 mb-1">14</div>
+                    <div class="text-sm" style="color: var(--text-tertiary);">2026 Awards (Stable)</div>
+                </div>
+                <div class="px-8 py-5 rounded-2xl text-center" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%); border: 1px solid rgba(245, 158, 11, 0.3);">
+                    <div class="text-4xl font-light text-amber-400 mb-1">3</div>
+                    <div class="text-sm" style="color: var(--text-tertiary);">Best of Innovation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Insight -->
+    <section class="py-16 px-6" style="background: #0a0a0a;">
+        <div class="max-w-4xl mx-auto">
+            <div class="p-8 rounded-2xl scroll-reveal" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.02) 100%); border: 1px solid rgba(249, 115, 22, 0.2);">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(249, 115, 22, 0.2);">
+                        <i data-lucide="rocket" class="w-6 h-6 text-orange-400"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-medium mb-2" style="color: var(--text-primary);">The Inflection Point Signal</h2>
+                        <p class="text-lg" style="color: var(--text-secondary);">Robotics BoI tripled (1→3) while total awards stayed flat (14). This signals <span class="text-orange-400 font-medium">quality leap</span>, not volume growth — the category is maturing into commercial viability.</p>
+                    </div>
+                </div>
+                <div class="space-y-4 pl-16">
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="user-circle" class="w-5 h-5 text-orange-500 mt-0.5 flex-shrink-0"></i>
+                        <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Humanoid momentum:</strong> Hexagon AEON, Hyundai MobED — ageing workforce and labour shortage driving adoption</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="factory" class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0"></i>
+                        <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Industrial automation:</strong> Oshkosh JLG autonomous boom lift with robotic end effector — construction automation</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="scan" class="w-5 h-5 text-purple-500 mt-0.5 flex-shrink-0"></i>
+                        <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Unified sensing:</strong> LyteVision 4D sensing platform enabling Physical AI across all robot form factors</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best of Innovation Showcase -->
+    <section class="py-20 px-6" style="background: linear-gradient(180deg, #0a0a0a 0%, #000 100%);">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center gap-4 mb-12 scroll-reveal">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(245, 158, 11, 0.1));">
+                    <i data-lucide="trophy" class="w-7 h-7 text-amber-400"></i>
+                </div>
+                <div>
+                    <h2 class="text-h2 font-display" style="color: var(--text-primary);">Best of Innovation Winners</h2>
+                    <p style="color: var(--text-tertiary);">3 breakthrough products signaling category maturation</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- MobED -->
+                <div class="boi-card p-6 rounded-2xl scroll-reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3 py-1.5 rounded text-xs font-mono font-bold" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(245, 158, 11, 0.1)); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.5);">🏆 Best of Innovation</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background: rgba(245, 158, 11, 0.2);">
+                        <i data-lucide="move" class="w-6 h-6 text-amber-400"></i>
+                    </div>
+                    <h3 class="text-lg font-medium mb-2" style="color: var(--text-primary);">MobED</h3>
+                    <p class="text-sm mb-4" style="color: var(--text-tertiary);">Hyundai Motor Company</p>
+                    <p class="text-sm mb-6" style="color: var(--text-secondary);">Mobile Eccentric Droid with four independently controlled wheels and unique eccentric mechanism. Navigates various terrains while remaining stable on uneven surfaces.</p>
+                    <div class="p-3 rounded-lg" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2);">
+                        <p class="text-xs" style="color: var(--text-secondary);"><strong class="text-amber-400">Key Innovation:</strong> Eccentric wheel mechanism for terrain adaptability</p>
+                    </div>
+                </div>
+
+                <!-- LyteVision -->
+                <div class="boi-card p-6 rounded-2xl scroll-reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3 py-1.5 rounded text-xs font-mono font-bold" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(245, 158, 11, 0.1)); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.5);">🏆 Best of Innovation</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background: rgba(139, 92, 246, 0.2);">
+                        <i data-lucide="eye" class="w-6 h-6 text-purple-400"></i>
+                    </div>
+                    <h3 class="text-lg font-medium mb-2" style="color: var(--text-primary);">LyteVision</h3>
+                    <p class="text-sm mb-4" style="color: var(--text-tertiary);">Lyte AI, Inc.</p>
+                    <p class="text-sm mb-6" style="color: var(--text-secondary);">Integrates 4D sensing, RGB imaging, and motion awareness into single platform. Unified spatial and visual data through one connection for all Physical AI platforms.</p>
+                    <div class="p-3 rounded-lg" style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.2);">
+                        <p class="text-xs" style="color: var(--text-secondary);"><strong class="text-purple-400">Key Innovation:</strong> Universal sensing platform for all robot form factors</p>
+                    </div>
+                </div>
+
+                <!-- Oshkosh JLG -->
+                <div class="boi-card p-6 rounded-2xl scroll-reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3 py-1.5 rounded text-xs font-mono font-bold" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(245, 158, 11, 0.1)); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.5);">🏆 Best of Innovation</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background: rgba(59, 130, 246, 0.2);">
+                        <i data-lucide="hard-hat" class="w-6 h-6 text-blue-400"></i>
+                    </div>
+                    <h3 class="text-lg font-medium mb-2" style="color: var(--text-primary);">JLG Boom Lift with Robotic End Effector</h3>
+                    <p class="text-sm mb-4" style="color: var(--text-tertiary);">Oshkosh Corporation</p>
+                    <p class="text-sm mb-6" style="color: var(--text-secondary);">Transforms traditional lift equipment into autonomous, job-performing robots. Executes welding, inspection, and installation at height — construction automation breakthrough.</p>
+                    <div class="p-3 rounded-lg" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2);">
+                        <p class="text-xs" style="color: var(--text-secondary);"><strong class="text-blue-400">Key Innovation:</strong> Existing equipment → Autonomous worker conversion</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Pillars -->
+    <section class="py-8 px-6 sticky top-16 z-40 no-print" style="background: rgba(0,0,0,0.9); backdrop-filter: blur(12px);">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="#humanoid" class="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(249, 115, 22, 0.1)); border: 1px solid rgba(249, 115, 22, 0.4); color: #f97316;">
+                    <i data-lucide="user" class="w-4 h-4 inline mr-2"></i>Humanoid & Mobile
+                </a>
+                <a href="#industrial" class="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1)); border: 1px solid rgba(59, 130, 246, 0.4); color: #3b82f6;">
+                    <i data-lucide="factory" class="w-4 h-4 inline mr-2"></i>Industrial
+                </a>
+                <a href="#specialty" class="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)); border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981;">
+                    <i data-lucide="settings" class="w-4 h-4 inline mr-2"></i>Specialty
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Humanoid & Mobile -->
+    <section id="humanoid" class="py-20 px-6" style="background: #0a0a0a;">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center gap-4 mb-12 scroll-reveal">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.3), rgba(249, 115, 22, 0.1));">
+                    <i data-lucide="user" class="w-7 h-7 text-orange-400"></i>
+                </div>
+                <div>
+                    <h2 class="text-h2 font-display" style="color: var(--text-primary);">Humanoid & Mobile Robotics</h2>
+                    <p style="color: var(--text-tertiary);">Human-form and quadruped robots for diverse environments</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- AEON -->
+                <div class="product-card p-6 scroll-reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(249, 115, 22, 0.2);">
+                                <i data-lucide="user-cog" class="w-5 h-5 text-orange-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">AEON Humanoid</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Hexagon</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(249, 115, 22, 0.15); color: #f97316;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">Humanoid robot addressing labour shortages as industries adapt to ageing populations. Built for industrial environments, operates safely alongside human workers.</p>
+                    <div class="p-3 rounded-lg mt-4" style="background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.2);">
+                        <p class="text-xs" style="color: var(--text-secondary);"><strong class="text-orange-400">Use Case:</strong> Industrial collaboration in ageing workforce environments</p>
+                    </div>
+                </div>
+
+                <!-- Lynx M20 Pro -->
+                <div class="product-card p-6 scroll-reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(249, 115, 22, 0.2);">
+                                <i data-lucide="dog" class="w-5 h-5 text-orange-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">Lynx M20 Pro</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Deep Robotics</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(249, 115, 22, 0.15); color: #f97316;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">World's first medium-sized wheel-leg quadruped robot for complex terrains and hazardous environments. Self-developed joints with IP66 protection.</p>
+                    <div class="flex items-center gap-2 text-xs" style="color: var(--text-tertiary);">
+                        <i data-lucide="shield" class="w-3 h-3"></i>
+                        <span>IP66, designed for hazardous environments</span>
+                    </div>
+                </div>
+
+                <!-- AA-2 Delivery Robot -->
+                <div class="product-card p-6 scroll-reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(59, 130, 246, 0.2);">
+                                <i data-lucide="package" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">AA-2 Delivery Robot</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">GoLe-Robotics</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">Autonomous delivery robot for premium apartments. Addresses overnight delivery challenges including worker fatigue and elevator navigation in multi-use complexes.</p>
+                    <div class="flex items-center gap-2 text-xs" style="color: var(--text-tertiary);">
+                        <i data-lucide="building" class="w-3 h-3"></i>
+                        <span>Premium residential last-mile delivery</span>
+                    </div>
+                </div>
+
+                <!-- NaviDock -->
+                <div class="product-card p-6 scroll-reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(16, 185, 129, 0.2);">
+                                <i data-lucide="target" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">NaviDock Vision Docking</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Navifra</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">World's first marker-less vision docking for AMRs with ±5mm accuracy. Eliminates LiDAR, QR codes, and physical markers — pure vision-based precision.</p>
+                    <div class="flex items-center gap-2 text-xs" style="color: var(--text-tertiary);">
+                        <i data-lucide="crosshair" class="w-3 h-3"></i>
+                        <span>±5mm accuracy, no markers required</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industrial Robotics -->
+    <section id="industrial" class="py-20 px-6" style="background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center gap-4 mb-12 scroll-reveal">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.1));">
+                    <i data-lucide="factory" class="w-7 h-7 text-blue-400"></i>
+                </div>
+                <div>
+                    <h2 class="text-h2 font-display" style="color: var(--text-primary);">Industrial & Manufacturing</h2>
+                    <p style="color: var(--text-tertiary);">Automation for construction, manufacturing, and specialized applications</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- ACCELaser -->
+                <div class="product-card p-6 scroll-reveal" style="border-color: rgba(59, 130, 246, 0.15); background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.02) 100%);">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(59, 130, 246, 0.2);">
+                                <i data-lucide="zap" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">ACCELaser HD1</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Yisu Innovation</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">World's first dual-laser machine with Flying 3D Galvo. Combines 80W blue diode and 60W infrared lasers for all materials. 610×305mm workspace.</p>
+                    <div class="flex items-center gap-4 mt-4">
+                        <div class="text-center">
+                            <div class="text-lg font-light text-blue-400">80W</div>
+                            <div class="text-xs" style="color: var(--text-tertiary);">Blue diode</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-light text-blue-400">60W</div>
+                            <div class="text-xs" style="color: var(--text-tertiary);">Infrared</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gauss MT90 -->
+                <div class="product-card p-6 scroll-reveal" style="border-color: rgba(59, 130, 246, 0.15); background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.02) 100%);">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(59, 130, 246, 0.2);">
+                                <i data-lucide="printer" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">Gauss MT90 Metal 3D Printer</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Ohsung System</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">Paste-based Metal Extrusion (PME) technology eliminates dust, explosion risks, and high-temperature processes. Safe for office environments.</p>
+                    <div class="p-3 rounded-lg mt-4" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2);">
+                        <p class="text-xs" style="color: var(--text-secondary);"><strong class="text-blue-400">Breakthrough:</strong> Office-safe metal 3D printing</p>
+                    </div>
+                </div>
+
+                <!-- SEGYM RT -->
+                <div class="product-card p-6 scroll-reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(16, 185, 129, 0.2);">
+                                <i data-lucide="dumbbell" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">SEGYM RT Training Platform</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">HUMANICS</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">Connected robotic training using Physical AI. Human-in-the-loop control reads user force in real-time, adjusts resistance dynamically for personalized workout.</p>
+                    <div class="flex items-center gap-2 text-xs" style="color: var(--text-tertiary);">
+                        <i data-lucide="activity" class="w-3 h-3"></i>
+                        <span>Real-time force adaptation</span>
+                    </div>
+                </div>
+
+                <!-- H-Medi Pro -->
+                <div class="product-card p-6 scroll-reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(244, 63, 94, 0.2);">
+                                <i data-lucide="shirt" class="w-5 h-5 text-rose-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">H-Medi Pro Robotic Suit</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">HUROTICS</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">World's first garment-type wearable robotic suit. Soft, ergonomic textile interface for all-day comfort. Under 2.8kg for personalized gait rehabilitation.</p>
+                    <div class="flex items-center gap-2 text-xs" style="color: var(--text-tertiary);">
+                        <i data-lucide="feather" class="w-3 h-3"></i>
+                        <span>Under 2.8kg, all-day wearable</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specialty Robotics -->
+    <section id="specialty" class="py-20 px-6" style="background: #0a0a0a;">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center gap-4 mb-12 scroll-reveal">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.1));">
+                    <i data-lucide="settings" class="w-7 h-7 text-green-400"></i>
+                </div>
+                <div>
+                    <h2 class="text-h2 font-display" style="color: var(--text-primary);">Specialty Applications</h2>
+                    <p style="color: var(--text-tertiary);">Niche solutions for golf, agriculture, and dexterous manipulation</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- SharpaWave -->
+                <div class="product-card p-6 scroll-reveal" style="border-color: rgba(16, 185, 129, 0.15); background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(16, 185, 129, 0.2);">
+                                <i data-lucide="hand" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">SharpaWave Dexterous Hand</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Sharpa</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">22 active degrees of freedom at 1:1 human scale. Ultra-responsive tactile sensing for robotics companies and research labs.</p>
+                    <div class="flex items-center gap-4 mt-4">
+                        <div class="text-center">
+                            <div class="text-lg font-light text-green-400">22</div>
+                            <div class="text-xs" style="color: var(--text-tertiary);">Active DOF</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-light text-green-400">1:1</div>
+                            <div class="text-xs" style="color: var(--text-tertiary);">Human scale</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DivotFiX -->
+                <div class="product-card p-6 scroll-reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(139, 92, 246, 0.2);">
+                                <i data-lucide="flag" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">DivotFiX</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">HL D&I Halla</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">World's first autonomous AI robot for repairing divots on golf course fairways. AI, LiDAR, and vision sensors detect damage, calculate paths, dispense sand.</p>
+                    <div class="flex items-center gap-2 text-xs" style="color: var(--text-tertiary);">
+                        <i data-lucide="map-pin" class="w-3 h-3"></i>
+                        <span>Golf course maintenance automation</span>
+                    </div>
+                </div>
+
+                <!-- VIATRIX Exoskeleton -->
+                <div class="product-card p-6 scroll-reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(249, 115, 22, 0.2);">
+                                <i data-lucide="mountain" class="w-5 h-5 text-orange-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" style="color: var(--text-primary);">VIATRIX Powered Exoskeleton</h3>
+                                <p class="text-xs" style="color: var(--text-tertiary);">ULS Robotics</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-mono" style="background: rgba(249, 115, 22, 0.15); color: #f97316;">Honoree</span>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">Range-extended powered exoskeleton for everyday walking, sports challenges, and outdoor exploration. "Traveler" positioning for active lifestyles.</p>
+                    <div class="flex items-center gap-2 text-xs" style="color: var(--text-tertiary);">
+                        <i data-lucide="compass" class="w-3 h-3"></i>
+                        <span>Consumer exoskeleton for outdoor adventure</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Takeaways -->
+    <section class="py-20 px-6" style="background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-h2 font-display text-center mb-12 scroll-reveal" style="color: var(--text-primary);">Strategic Takeaways</h2>
+
+            <div class="space-y-6">
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(249, 115, 22, 0.2);">
+                            <span class="text-orange-400 font-bold">1</span>
+                        </div>
+                        <div>
+                            <h3 class="font-medium mb-2" style="color: var(--text-primary);">3x BoI Growth = Category Maturation</h3>
+                            <p class="text-sm" style="color: var(--text-secondary);">Total awards stable (14), but Best of Innovation tripled (1→3). Quality over quantity — robotics is ready for commercial deployment, not just R&D demos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(59, 130, 246, 0.2);">
+                            <span class="text-blue-400 font-bold">2</span>
+                        </div>
+                        <div>
+                            <h3 class="font-medium mb-2" style="color: var(--text-primary);">Industrial Automation is the Near-Term Play</h3>
+                            <p class="text-sm" style="color: var(--text-secondary);">Oshkosh JLG (BoI) shows how to convert existing equipment into autonomous workers. Construction, welding, inspection — existing install base is the wedge.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(139, 92, 246, 0.2);">
+                            <span class="text-purple-400 font-bold">3</span>
+                        </div>
+                        <div>
+                            <h3 class="font-medium mb-2" style="color: var(--text-primary);">Unified Sensing Platform is Key Enabler</h3>
+                            <p class="text-sm" style="color: var(--text-secondary);">LyteVision (BoI) provides 4D + RGB + motion through single connection. Platform plays that serve all robot form factors will capture disproportionate value.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(16, 185, 129, 0.2);">
+                            <span class="text-green-400 font-bold">4</span>
+                        </div>
+                        <div>
+                            <h3 class="font-medium mb-2" style="color: var(--text-primary);">Korean Mobility Players Expanding into Robotics</h3>
+                            <p class="text-sm" style="color: var(--text-secondary);">Hyundai MobED (BoI) signals auto OEMs moving into robotics. Expect more crossover as software-defined mobility and Physical AI converge.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6" style="background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="max-w-6xl mx-auto text-center">
+            <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-8 mx-auto mb-4">
+            <p class="text-sm" style="color: var(--text-tertiary);">CES 2026 Strategic Intelligence Report</p>
+            <p class="text-xs mt-2" style="color: var(--text-muted);">Prepared by RedPeak Intelligence</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

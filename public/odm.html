@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ODM View | CES 2026 | RedPeak Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg': { 'primary': '#000000', 'secondary': '#0a0a0a', 'tertiary': '#111111' },
+                        'accent': { 'gold': '#d4af37', 'blue': '#3b82f6', 'green': '#10b981', 'red': '#ef4444', 'purple': '#8b5cf6', 'orange': '#f97316' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ease-quint: cubic-bezier(0.22, 1, 0.36, 1);
+            --text-primary: rgba(255, 255, 255, 0.90);
+            --text-secondary: rgba(255, 255, 255, 0.70);
+            --text-tertiary: rgba(255, 255, 255, 0.50);
+            --text-muted: rgba(255, 255, 255, 0.30);
+            --border-subtle: rgba(255, 255, 255, 0.10);
+            --border-medium: rgba(255, 255, 255, 0.20);
+            --border-strong: rgba(255, 255, 255, 0.30);
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #000; color: var(--text-primary); }
+        .font-display { font-family: 'Playfair Display', Georgia, serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .text-hero { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; }
+        .text-h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15; }
+        .text-h2 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.2; }
+        .text-h3 { font-size: clamp(1.125rem, 2vw, 1.375rem); line-height: 1.3; }
+
+        .nav-pill { padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; transition: all 0.2s ease; color: var(--text-secondary); }
+        .nav-pill:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+        .nav-pill.active { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+
+        .card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: 0.75rem; transition: all 0.5s var(--ease-quint); }
+        .card:hover { border-color: var(--border-medium); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); }
+
+        .stat-highlight { border-left: 3px solid; padding-left: 1rem; }
+        .stat-positive { border-color: #10b981; }
+        .stat-warning { border-color: #f59e0b; }
+        .stat-accent { border-color: #f97316; }
+
+        .growth-bar { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.1); overflow: hidden; }
+        .growth-bar-fill { height: 100%; border-radius: 4px; transition: width 1s var(--ease-quint); }
+
+        .imperative-card { position: relative; overflow: hidden; }
+        .imperative-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-color, #f97316); }
+
+        .fade-in { animation: fadeIn 0.8s var(--ease-quint) forwards; opacity: 0; }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s var(--ease-quint), transform 0.8s var(--ease-quint); }
+        .scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
+
+        .capability-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        @media (max-width: 640px) { .capability-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Navigation -->
+        <nav class="fixed top-0 left-0 right-0 z-50 no-print" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-7 w-auto">
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="redpeak-pov.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                    <span>Our PoV</span>
+                </a>
+                <div class="relative group">
+                    <button class="nav-pill flex items-center gap-2" style="background: rgba(255,255,255,0.1);">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                        <span>Insights</span>
+                        <i data-lucide="chevron-down" class="w-3 h-3 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute top-full right-0 mt-2 py-2 min-w-[180px] rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" style="background: rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                        <a href="keynotes.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="mic" class="w-4 h-4"></i>
+                            <span>Keynote Intelligence</span>
+                        </a>
+                        <a href="electronics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="monitor" class="w-4 h-4"></i>
+                            <span>Electronics View</span>
+                        </a>
+                        <a href="odm.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors bg-white/5" style="color: var(--text-primary);">
+                            <i data-lucide="factory" class="w-4 h-4"></i>
+                            <span>ODM View</span>
+                        </a>
+                        <a href="innovation-awards.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="award" class="w-4 h-4"></i>
+                            <span>Innovation Awards</span>
+                        </a>
+                        <a href="sustainability.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="leaf" class="w-4 h-4"></i>
+                            <span>Sustainability</span>
+                        </a>
+                        <a href="automobile.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="car" class="w-4 h-4"></i>
+                            <span>Automobile</span>
+                        </a>
+                        <a href="healthcare.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+                            <span>Healthcare</span>
+                        </a>
+                        <a href="robotics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="bot" class="w-4 h-4"></i>
+                            <span>Robotics</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-[60vh] flex items-center pt-24 pb-16 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 50%, rgba(249, 115, 22, 0.3) 0%, transparent 60%);"></div>
+        </div>
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="flex items-center gap-3 mb-6 fade-in">
+                <i data-lucide="factory" class="w-5 h-5" style="color: var(--text-tertiary);"></i>
+                <span class="text-sm tracking-widest" style="color: var(--text-tertiary); letter-spacing: 0.2em;">ODM VIEW</span>
+            </div>
+            <h1 class="font-display text-hero font-light mb-8 fade-in stagger-1">
+                What CES 2026 Means<br>for Manufacturing Partners
+            </h1>
+            <p class="text-xl font-light max-w-3xl mb-8 fade-in stagger-2" style="color: var(--text-secondary);">
+                Strategic intelligence for ODMs, EMS providers, and manufacturing partners navigating the AI infrastructure opportunity and PC market consolidation.
+            </p>
+            <div class="flex flex-wrap gap-6 fade-in stagger-3">
+                <div class="stat-highlight stat-accent">
+                    <p class="text-xs mb-1" style="color: var(--text-tertiary);">AI SERVER MARKET</p>
+                    <p class="text-2xl font-light">$32B+</p>
+                    <p class="text-xs" style="color: var(--text-muted);">Taiwan ODM Revenue</p>
+                </div>
+                <div class="stat-highlight stat-positive">
+                    <p class="text-xs mb-1" style="color: var(--text-tertiary);">MARKET SHARE</p>
+                    <p class="text-2xl font-light">90%+</p>
+                    <p class="text-xs" style="color: var(--text-muted);">Global AI Server Mfg</p>
+                </div>
+                <div class="stat-highlight stat-warning">
+                    <p class="text-xs mb-1" style="color: var(--text-tertiary);">TOP GROWER</p>
+                    <p class="text-2xl font-light">+92.7%</p>
+                    <p class="text-xs" style="color: var(--text-muted);">Wistron YoY</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executive Summary -->
+    <section class="py-20" style="background: #0a0a0a;">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 scroll-reveal">
+                    <h2 class="font-display text-h2 font-light mb-6">Executive Summary</h2>
+                    <div class="space-y-4 text-lg" style="color: var(--text-secondary);">
+                        <p>Taiwan's ODM industry stands at a <strong class="text-white">critical inflection point</strong>. CES 2026 reveals a market splitting in two directions: the traditional PC business facing consolidation pressure, while AI infrastructure manufacturing explodes into a $32B+ opportunity.</p>
+                        <p>The ODMs that thrive will be those that recognize this moment for what it is: not just a market shift, but a <strong class="text-white">capability transformation imperative</strong>. Liquid cooling expertise, high-density power delivery, custom interconnect design—these are the new table stakes for AI infrastructure manufacturing.</p>
+                        <p>The traditional assembly-focused business model is commoditizing. Value creation is migrating toward system integration, co-design partnerships, and specialized manufacturing capabilities.</p>
+                    </div>
+                </div>
+                <div class="scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="card p-6">
+                        <h3 class="font-medium mb-4">Key Takeaways</h3>
+                        <ul class="space-y-3 text-sm" style="color: var(--text-secondary);">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="trending-up" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #10b981;"></i>
+                                <span>AI server manufacturing is the growth engine—$32B+ and growing</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="alert-triangle" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #f59e0b;"></i>
+                                <span>PC brand consolidation increases customer concentration risk</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="zap" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #f97316;"></i>
+                                <span>Multi-vendor chip competition benefits Taiwan ecosystem</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="cpu" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #3b82f6;"></i>
+                                <span>Capability transformation required: thermal, power, interconnect</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Inflection Point -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-display text-h1 font-light mb-4">The Inflection Point</h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">Two forces reshaping the ODM landscape: AI boom and PC consolidation.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <!-- Opportunity: AI Server Boom -->
+                <div class="card p-8 scroll-reveal" style="border-color: rgba(16, 185, 129, 0.3);">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(16, 185, 129, 0.1);">
+                            <i data-lucide="server" class="w-6 h-6" style="color: #34d399;"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-medium" style="color: #34d399;">OPPORTUNITY</span>
+                            <h3 class="text-h3 font-medium">AI Server Manufacturing Boom</h3>
+                        </div>
+                    </div>
+                    <p class="mb-6" style="color: var(--text-secondary);">Taiwan ODMs have captured 90%+ of global AI server manufacturing. Every hyperscaler, every AI company, every enterprise AI deployment relies on Taiwan's manufacturing ecosystem.</p>
+
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <div class="flex items-center justify-between text-sm mb-2">
+                                <span>Wistron</span>
+                                <span class="font-mono" style="color: #34d399;">+92.7%</span>
+                            </div>
+                            <div class="growth-bar">
+                                <div class="growth-bar-fill" style="width: 92.7%; background: linear-gradient(90deg, #34d399 0%, #10b981 100%);"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between text-sm mb-2">
+                                <span>Foxconn</span>
+                                <span class="font-mono" style="color: #34d399;">+45.2%</span>
+                            </div>
+                            <div class="growth-bar">
+                                <div class="growth-bar-fill" style="width: 45.2%; background: linear-gradient(90deg, #34d399 0%, #10b981 100%);"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between text-sm mb-2">
+                                <span>Quanta</span>
+                                <span class="font-mono" style="color: #34d399;">+38.5%</span>
+                            </div>
+                            <div class="growth-bar">
+                                <div class="growth-bar-fill" style="width: 38.5%; background: linear-gradient(90deg, #34d399 0%, #10b981 100%);"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-lg" style="background: rgba(16, 185, 129, 0.05);">
+                        <p class="text-xs font-medium mb-1" style="color: #34d399;">MARKET SIZE</p>
+                        <p class="text-2xl font-light mb-1">$32B+</p>
+                        <p class="text-xs" style="color: var(--text-tertiary);">Taiwan ODM AI server revenue and growing rapidly</p>
+                    </div>
+                </div>
+
+                <!-- Challenge: PC Consolidation -->
+                <div class="card p-8 scroll-reveal" style="border-color: rgba(245, 158, 11, 0.3); transition-delay: 0.1s;">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(245, 158, 11, 0.1);">
+                            <i data-lucide="alert-triangle" class="w-6 h-6" style="color: #fbbf24;"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-medium" style="color: #fbbf24;">CHALLENGE</span>
+                            <h3 class="text-h3 font-medium">PC Brand Consolidation Risk</h3>
+                        </div>
+                    </div>
+                    <p class="mb-6" style="color: var(--text-secondary);">As PC brands consolidate, ODMs face increasing customer concentration. Fewer brands means less negotiating leverage and higher dependency on key accounts.</p>
+
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center justify-between p-3 rounded-lg" style="background: rgba(16, 185, 129, 0.05);">
+                            <span class="text-sm font-medium">Lenovo</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm" style="color: var(--text-tertiary);">25.1%</span>
+                                <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">+16.6%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 rounded-lg" style="background: rgba(16, 185, 129, 0.05);">
+                            <span class="text-sm font-medium">HP</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm" style="color: var(--text-tertiary);">20.8%</span>
+                                <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">+8.2%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 rounded-lg" style="background: rgba(16, 185, 129, 0.05);">
+                            <span class="text-sm font-medium">Dell</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm" style="color: var(--text-tertiary);">15.2%</span>
+                                <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">+5.4%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-lg" style="background: rgba(245, 158, 11, 0.05);">
+                        <p class="text-xs font-medium mb-1" style="color: #fbbf24;">RISK</p>
+                        <p class="text-sm" style="color: var(--text-tertiary);">Top 3 brands control 61% of market. Mid-tier brands (Acer +4.2%) are losing share—potential customer attrition.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-Vendor Chip Benefit -->
+            <div class="card p-8 scroll-reveal" style="transition-delay: 0.2s;">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(59, 130, 246, 0.1);">
+                                <i data-lucide="cpu" class="w-6 h-6" style="color: #60a5fa;"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium" style="color: #60a5fa;">TAILWIND</span>
+                                <h3 class="text-h3 font-medium">Multi-Vendor Chip Competition</h3>
+                            </div>
+                        </div>
+                        <p class="mb-6" style="color: var(--text-secondary);">Intel, AMD, Qualcomm, and NVIDIA are all competing intensely—and all need Taiwan's manufacturing ecosystem. This competition benefits ODMs with diversified chip vendor relationships.</p>
+                        <ul class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                            <li>• Intel Lunar Lake: 180 TOPS NPU, needs Taiwan fabs</li>
+                            <li>• AMD Strix Point: 60 TOPS NPU, TSMC fabrication</li>
+                            <li>• Qualcomm X Elite: 80 TOPS NPU, Taiwan supply chain</li>
+                            <li>• NVIDIA: Blackwell architecture, CoWoS packaging</li>
+                        </ul>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 rounded-lg text-center" style="background: rgba(59, 130, 246, 0.05);">
+                            <i data-lucide="cpu" class="w-8 h-8 mx-auto mb-2" style="color: #60a5fa;"></i>
+                            <p class="font-medium text-sm">Intel</p>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Lunar Lake</p>
+                        </div>
+                        <div class="p-4 rounded-lg text-center" style="background: rgba(239, 68, 68, 0.05);">
+                            <i data-lucide="cpu" class="w-8 h-8 mx-auto mb-2" style="color: #f87171;"></i>
+                            <p class="font-medium text-sm">AMD</p>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Strix Point</p>
+                        </div>
+                        <div class="p-4 rounded-lg text-center" style="background: rgba(245, 158, 11, 0.05);">
+                            <i data-lucide="cpu" class="w-8 h-8 mx-auto mb-2" style="color: #fbbf24;"></i>
+                            <p class="font-medium text-sm">Qualcomm</p>
+                            <p class="text-xs" style="color: var(--text-tertiary);">X Elite</p>
+                        </div>
+                        <div class="p-4 rounded-lg text-center" style="background: rgba(16, 185, 129, 0.05);">
+                            <i data-lucide="cpu" class="w-8 h-8 mx-auto mb-2" style="color: #34d399;"></i>
+                            <p class="font-medium text-sm">NVIDIA</p>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Blackwell</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Imperatives -->
+    <section class="py-20" style="background: #0a0a0a;">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-display text-h1 font-light mb-4">Strategic Imperatives</h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">Four priorities for ODMs navigating the AI infrastructure opportunity.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Imperative 1 -->
+                <div class="card imperative-card p-8 scroll-reveal" style="--accent-color: #f97316;">
+                    <div class="pl-4">
+                        <span class="text-xs font-medium tracking-wider" style="color: #fb923c;">IMPERATIVE 01</span>
+                        <h3 class="text-h3 font-medium mt-2 mb-4">Invest in AI Infrastructure Capabilities</h3>
+                        <p class="mb-6" style="color: var(--text-secondary);">AI server manufacturing requires specialized capabilities that traditional PC assembly doesn't develop. This is where investment must focus.</p>
+                        <div class="capability-grid">
+                            <div class="p-4 rounded-lg" style="background: rgba(249, 115, 22, 0.05);">
+                                <i data-lucide="thermometer" class="w-5 h-5 mb-2" style="color: #fb923c;"></i>
+                                <p class="font-medium text-sm mb-1">Liquid Cooling</p>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Thermal management for high-density compute</p>
+                            </div>
+                            <div class="p-4 rounded-lg" style="background: rgba(249, 115, 22, 0.05);">
+                                <i data-lucide="zap" class="w-5 h-5 mb-2" style="color: #fb923c;"></i>
+                                <p class="font-medium text-sm mb-1">Power Delivery</p>
+                                <p class="text-xs" style="color: var(--text-tertiary);">High-density power for AI accelerators</p>
+                            </div>
+                            <div class="p-4 rounded-lg" style="background: rgba(249, 115, 22, 0.05);">
+                                <i data-lucide="network" class="w-5 h-5 mb-2" style="color: #fb923c;"></i>
+                                <p class="font-medium text-sm mb-1">Interconnect Design</p>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Custom high-speed fabric integration</p>
+                            </div>
+                            <div class="p-4 rounded-lg" style="background: rgba(249, 115, 22, 0.05);">
+                                <i data-lucide="layers" class="w-5 h-5 mb-2" style="color: #fb923c;"></i>
+                                <p class="font-medium text-sm mb-1">System Integration</p>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Full-stack AI infrastructure expertise</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imperative 2 -->
+                <div class="card imperative-card p-8 scroll-reveal" style="--accent-color: #3b82f6; transition-delay: 0.1s;">
+                    <div class="pl-4">
+                        <span class="text-xs font-medium tracking-wider" style="color: #60a5fa;">IMPERATIVE 02</span>
+                        <h3 class="text-h3 font-medium mt-2 mb-4">Diversify Customer Base</h3>
+                        <p class="mb-6" style="color: var(--text-secondary);">As PC brands consolidate, customer concentration risk increases. Proactive diversification protects against account loss.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #60a5fa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Expand hyperscaler relationships (AWS, Google, Microsoft, Meta)</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #60a5fa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Pursue AI startup partnerships (emerging customers)</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #60a5fa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Develop geographic market diversification</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #60a5fa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Build direct enterprise relationships</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imperative 3 -->
+                <div class="card imperative-card p-8 scroll-reveal" style="--accent-color: #10b981; transition-delay: 0.2s;">
+                    <div class="pl-4">
+                        <span class="text-xs font-medium tracking-wider" style="color: #34d399;">IMPERATIVE 03</span>
+                        <h3 class="text-h3 font-medium mt-2 mb-4">Move Up the Value Chain</h3>
+                        <p class="mb-6" style="color: var(--text-secondary);">Commodity assembly margins are compressing. Value creation is migrating toward design partnership and system integration.</p>
+                        <div class="space-y-4">
+                            <div class="p-4 rounded-lg" style="background: rgba(16, 185, 129, 0.05);">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xs font-medium px-2 py-0.5 rounded" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">LOW VALUE</span>
+                                    <span class="text-sm">Assembly Manufacturing</span>
+                                </div>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Commoditizing, margin pressure, easily replicated</p>
+                            </div>
+                            <div class="flex justify-center">
+                                <i data-lucide="arrow-down" class="w-4 h-4" style="color: var(--text-muted);"></i>
+                            </div>
+                            <div class="p-4 rounded-lg border" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xs font-medium px-2 py-0.5 rounded" style="background: rgba(16, 185, 129, 0.3); color: #34d399;">HIGH VALUE</span>
+                                    <span class="text-sm font-medium">Design Partnership & Integration</span>
+                                </div>
+                                <p class="text-xs" style="color: var(--text-secondary);">Co-design, custom solutions, system expertise</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imperative 4 -->
+                <div class="card imperative-card p-8 scroll-reveal" style="--accent-color: #8b5cf6; transition-delay: 0.3s;">
+                    <div class="pl-4">
+                        <span class="text-xs font-medium tracking-wider" style="color: #a78bfa;">IMPERATIVE 04</span>
+                        <h3 class="text-h3 font-medium mt-2 mb-4">Build Sustainability Manufacturing</h3>
+                        <p class="mb-6" style="color: var(--text-secondary);">Brand customers increasingly require sustainability certifications and reporting. Manufacturing capability must include green credentials.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="leaf" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #a78bfa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Carbon footprint tracking and reduction</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="recycle" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #a78bfa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Recycled materials processing capability</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="award" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #a78bfa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Environmental certifications (ISO 14001, etc.)</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="file-check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #a78bfa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Supply chain transparency reporting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Growth Vectors -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-display text-h1 font-light mb-4">Growth Vectors</h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">Emerging categories where ODM capabilities can expand beyond traditional PC/server.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Vector 1 -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);">
+                            <i data-lucide="server" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h3 class="text-h3 font-medium">AI Server & HPC</h3>
+                    </div>
+                    <p class="mb-6" style="color: var(--text-secondary);">The primary growth engine. Every hyperscaler expansion, every enterprise AI deployment needs Taiwan ODM manufacturing.</p>
+                    <div class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                        <p>• GPU server systems (NVIDIA, AMD)</p>
+                        <p>• Custom AI accelerator integration</p>
+                        <p>• Edge AI infrastructure</p>
+                        <p>• HPC cluster manufacturing</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t" style="border-color: var(--border-subtle);">
+                        <p class="text-xs" style="color: var(--text-muted);">Market: $32B+ and growing 40%+ annually</p>
+                    </div>
+                </div>
+
+                <!-- Vector 2 -->
+                <div class="card p-6 scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);">
+                            <i data-lucide="glasses" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h3 class="text-h3 font-medium">Wearables & AR</h3>
+                    </div>
+                    <p class="mb-6" style="color: var(--text-secondary);">AR glasses and wearables are emerging as new computing platforms. Miniaturization and precision assembly are key capabilities.</p>
+                    <div class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                        <p>• AR glasses manufacturing (Meta, Xreal)</p>
+                        <p>• Smartwatch assembly</p>
+                        <p>• Hearables and audio wearables</p>
+                        <p>• Health monitoring devices</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t" style="border-color: var(--border-subtle);">
+                        <p class="text-xs" style="color: var(--text-muted);">CES highlight: TCL HDR10 AR glasses</p>
+                    </div>
+                </div>
+
+                <!-- Vector 3 -->
+                <div class="card p-6 scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);">
+                            <i data-lucide="bot" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h3 class="text-h3 font-medium">Robotics Components</h3>
+                    </div>
+                    <p class="mb-6" style="color: var(--text-secondary);">Physical AI and robotics represent a new manufacturing frontier. Motor control, sensing, and computing integration are key.</p>
+                    <div class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                        <p>• Home robot assemblies (vacuum, companion)</p>
+                        <p>• Industrial robot components</p>
+                        <p>• Humanoid robot subsystems</p>
+                        <p>• Autonomous vehicle computing</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t" style="border-color: var(--border-subtle);">
+                        <p class="text-xs" style="color: var(--text-muted);">CES trend: 50% of humanoid exhibitors from China</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What This Means For You -->
+    <section class="py-20" style="background: #0a0a0a;">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-display text-h1 font-light mb-4">What This Means for You</h2>
+                <p class="text-lg" style="color: var(--text-secondary);">Strategic questions based on your current position.</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- For Large ODMs -->
+                <div class="card p-8 scroll-reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(16, 185, 129, 0.1);">
+                            <i data-lucide="building" class="w-6 h-6" style="color: #34d399;"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-h3 font-medium mb-3">If You're a Large ODM (Foxconn, Quanta, Wistron scale)</h3>
+                            <p class="mb-4" style="color: var(--text-secondary);">You have scale advantages and established hyperscaler relationships. The question is execution speed on capability transformation.</p>
+                            <ul class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                                <li>• How quickly can you build liquid cooling and advanced thermal capabilities?</li>
+                                <li>• Are you capturing your fair share of the AI infrastructure boom?</li>
+                                <li>• How are you managing PC customer concentration as brands consolidate?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- For Mid-Tier ODMs -->
+                <div class="card p-8 scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(245, 158, 11, 0.1);">
+                            <i data-lucide="factory" class="w-6 h-6" style="color: #fbbf24;"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-h3 font-medium mb-3">If You're a Mid-Tier ODM (Compal, Pegatron scale)</h3>
+                            <p class="mb-4" style="color: var(--text-secondary);">The middle position requires clear strategic choices. You can't compete on pure scale—differentiation and specialization matter more.</p>
+                            <ul class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                                <li>• What's your AI infrastructure entry strategy? Partnership? Acquisition?</li>
+                                <li>• Which growth vectors (wearables, robotics, displays) match your capabilities?</li>
+                                <li>• How do you compete for hyperscaler business against larger peers?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- For Specialized Manufacturers -->
+                <div class="card p-8 scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(59, 130, 246, 0.1);">
+                            <i data-lucide="target" class="w-6 h-6" style="color: #60a5fa;"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-h3 font-medium mb-3">If You're a Specialized Manufacturer</h3>
+                            <p class="mb-4" style="color: var(--text-secondary);">Specialization can be an advantage in a fragmenting market. Deep expertise in specific categories creates defensible positions.</p>
+                            <ul class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                                <li>• How can you leverage specialized expertise for AI infrastructure niches?</li>
+                                <li>• Are there underserved customer segments you can dominate?</li>
+                                <li>• What partnerships could extend your capabilities without losing focus?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t" style="border-color: var(--border-subtle);">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-6 w-auto opacity-50">
+                    <span class="text-sm" style="color: var(--text-tertiary);">RedPeak Intelligence</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="text-sm hover:text-white transition-colors" style="color: var(--text-tertiary);">Overview</a>
+                    <a href="redpeak-pov.html" class="text-sm hover:text-white transition-colors" style="color: var(--text-tertiary);">Our PoV</a>
+                    <a href="electronics.html" class="text-sm hover:text-white transition-colors" style="color: var(--text-tertiary);">Electronics View</a>
+                </div>
+                <p class="text-xs" style="color: var(--text-muted);">
+                    © 2026 RedPeak. CES 2026 Strategic Intelligence.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Scroll reveal animation
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('revealed');
+            });
+        }, observerOptions);
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Animate growth bars on scroll
+        const barObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.dataset.width || entry.target.style.width;
+                }
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.growth-bar-fill').forEach(el => barObserver.observe(el));
+    </script>
+</body>
+</html>

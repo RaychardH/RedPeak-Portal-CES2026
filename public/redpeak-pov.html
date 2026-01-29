@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Point of View | CES 2026 | RedPeak Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg': {
+                            'primary': '#000000',
+                            'secondary': '#0a0a0a',
+                            'tertiary': '#111111'
+                        },
+                        'accent': {
+                            'gold': '#d4af37',
+                            'blue': '#3b82f6',
+                            'green': '#10b981',
+                            'red': '#ef4444',
+                            'purple': '#8b5cf6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ease-quint: cubic-bezier(0.22, 1, 0.36, 1);
+            --text-primary: rgba(255, 255, 255, 0.90);
+            --text-secondary: rgba(255, 255, 255, 0.70);
+            --text-tertiary: rgba(255, 255, 255, 0.50);
+            --text-muted: rgba(255, 255, 255, 0.30);
+            --border-subtle: rgba(255, 255, 255, 0.10);
+            --border-medium: rgba(255, 255, 255, 0.20);
+            --border-strong: rgba(255, 255, 255, 0.30);
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000;
+            color: var(--text-primary);
+        }
+        .font-display { font-family: 'Playfair Display', Georgia, serif; }
+        .text-hero { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; }
+        .text-h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15; }
+        .text-h2 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.2; }
+        .text-h3 { font-size: clamp(1.125rem, 2vw, 1.375rem); line-height: 1.3; }
+
+        .nav-pill {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+        }
+        .nav-pill:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+        .nav-pill.active {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 0.75rem;
+            transition: all 0.5s var(--ease-quint);
+        }
+        .card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .theme-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .theme-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--theme-color, #10b981) 0%, transparent 100%);
+        }
+
+        .quote-mark {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            line-height: 1;
+            color: var(--theme-color, rgba(255,255,255,0.1));
+            opacity: 0.25;
+            position: absolute;
+            top: -0.5rem;
+            left: 1rem;
+        }
+
+        .strategic-question {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--theme-color, rgba(255,255,255,0.2));
+            border-radius: 0.5rem;
+            padding: 1.5rem 2rem;
+            margin-top: 1.5rem;
+        }
+        .strategic-question-large {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--theme-color, rgba(255,255,255,0.2));
+            border-radius: 0.75rem;
+            padding: 2rem 2.5rem;
+            margin-top: 2rem;
+            max-width: 500px;
+        }
+        .strategic-question-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            color: var(--theme-color, #fff);
+        }
+        .strategic-question-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s var(--ease-quint) forwards;
+            opacity: 0;
+        }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s var(--ease-quint), transform 0.8s var(--ease-quint);
+        }
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Navigation -->
+        <nav class="fixed top-0 left-0 right-0 z-50 no-print" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-7 w-auto">
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="redpeak-pov.html" class="nav-pill flex items-center gap-2" style="background: rgba(255,255,255,0.1);">
+                    <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                    <span>Our PoV</span>
+                </a>
+                <div class="relative group">
+                    <button class="nav-pill flex items-center gap-2">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                        <span>Insights</span>
+                        <i data-lucide="chevron-down" class="w-3 h-3 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute top-full right-0 mt-2 py-2 min-w-[180px] rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" style="background: rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                        <a href="keynotes.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="mic" class="w-4 h-4"></i>
+                            <span>Keynote Intelligence</span>
+                        </a>
+                        <a href="electronics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="monitor" class="w-4 h-4"></i>
+                            <span>Electronics View</span>
+                        </a>
+                        <a href="odm.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="factory" class="w-4 h-4"></i>
+                            <span>ODM View</span>
+                        </a>
+                        <a href="innovation-awards.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="award" class="w-4 h-4"></i>
+                            <span>Innovation Awards</span>
+                        </a>
+                        <a href="sustainability.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="leaf" class="w-4 h-4"></i>
+                            <span>Sustainability</span>
+                        </a>
+                        <a href="automobile.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="car" class="w-4 h-4"></i>
+                            <span>Automobile</span>
+                        </a>
+                        <a href="healthcare.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+                            <span>Healthcare</span>
+                        </a>
+                        <a href="robotics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="bot" class="w-4 h-4"></i>
+                            <span>Robotics</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-[70vh] flex items-center justify-center pt-24 pb-16 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background: radial-gradient(ellipse at 30% 50%, rgba(16, 185, 129, 0.3) 0%, transparent 50%);"></div>
+            <div class="absolute inset-0" style="background: radial-gradient(ellipse at 70% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%);"></div>
+        </div>
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <p class="text-sm tracking-widest mb-6 fade-in" style="color: var(--text-tertiary); letter-spacing: 0.2em;">OUR POINT OF VIEW</p>
+            <h1 class="font-display text-hero font-light mb-8 fade-in stagger-1">
+                When Technology<br>Commoditizes, Brand<br>Becomes the Moat
+            </h1>
+            <p class="text-xl font-light max-w-2xl mx-auto mb-8 fade-in stagger-2" style="color: var(--text-secondary);">
+                Five strategic observations from CES 2026 that will reshape how brands compete, differentiate, and connect.
+            </p>
+            <div class="flex items-center justify-center gap-2 fade-in stagger-3" style="color: var(--text-tertiary);">
+                <span class="text-sm">January 2026</span>
+                <span>·</span>
+                <span class="text-sm">RedPeak Strategy Team</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction -->
+    <section class="py-20" style="background: #0a0a0a;">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="scroll-reveal">
+                <p class="text-lg leading-relaxed mb-6" style="color: var(--text-secondary);">
+                    CES is not just a technology showcase—it's a leading indicator of where brand strategy must evolve. After analyzing 40+ major brands and 11 industry hypotheses validated against CES 2026 announcements, we've identified five themes that demand strategic attention.
+                </p>
+                <p class="text-lg leading-relaxed" style="color: var(--text-secondary);">
+                    These aren't predictions. They're observations about shifts already underway—and strategic questions every brand leader should be asking.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Theme 1: Brand Differentiation Crisis -->
+    <section class="py-24">
+        <div class="max-w-4xl mx-auto px-6">
+            <!-- Header -->
+            <div class="text-center mb-12 scroll-reveal">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <span class="text-sm font-medium px-3 py-1 rounded-full" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">THEME 01</span>
+                </div>
+                <h2 class="font-display text-h1 font-light mb-6">
+                    The Brand Differentiation Crisis
+                </h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
+                    When every laptop has an NPU, every TV has AI upscaling, and every phone has computational photography—what's left to differentiate on?
+                </p>
+            </div>
+
+            <!-- Three columns of insights -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12 scroll-reveal" style="transition-delay: 0.1s;">
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(239, 68, 68, 0.1);">
+                        <i data-lucide="cpu" class="w-5 h-5" style="color: #f87171;"></i>
+                    </div>
+                    <p class="font-medium mb-2">AI is now table stakes</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Intel's 180 TOPS, AMD's 60 TOPS, Qualcomm's 80 TOPS—NPU specs have converged.</p>
+                </div>
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(239, 68, 68, 0.1);">
+                        <i data-lucide="copy" class="w-5 h-5" style="color: #f87171;"></i>
+                    </div>
+                    <p class="font-medium mb-2">Feature parity is instant</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Any innovation gets copied within one product cycle. Specs-based differentiation has a half-life of months.</p>
+                </div>
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(239, 68, 68, 0.1);">
+                        <i data-lucide="users" class="w-5 h-5" style="color: #f87171;"></i>
+                    </div>
+                    <p class="font-medium mb-2">Consumers aren't buying AI</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Dell's own admission: "Consumers are not buying based on AI." The spec war has disconnected from actual purchase drivers.</p>
+                </div>
+            </div>
+
+            <!-- Quote Card - Full Width -->
+            <div class="scroll-reveal" style="transition-delay: 0.2s;">
+                <div class="card p-8 theme-card" style="--theme-color: #ef4444;">
+                    <span class="quote-mark">"</span>
+                    <div class="relative z-10 pt-6 text-center">
+                        <p class="text-xl font-light leading-relaxed max-w-2xl mx-auto mb-6" style="color: #fca5a5;">
+                            The brands that win in 2026 won't be the ones with the best specs. They'll be the ones with the clearest story about why those specs matter to real people.
+                        </p>
+                        <div class="strategic-question-large mx-auto text-left">
+                            <p class="strategic-question-label">Strategic Question</p>
+                            <p class="strategic-question-text">What's your differentiation story beyond specifications?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Theme 2: China's Brand Maturation -->
+    <section class="py-24" style="background: #0a0a0a;">
+        <div class="max-w-4xl mx-auto px-6">
+            <!-- Header -->
+            <div class="text-center mb-12 scroll-reveal">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <span class="text-sm font-medium px-3 py-1 rounded-full" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">THEME 02</span>
+                </div>
+                <h2 class="font-display text-h1 font-light mb-6">
+                    China's Brand Maturation Moment
+                </h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
+                    Chinese brands are no longer competing on price alone. They're winning on innovation, earning recognition, and closing the technology gap.
+                </p>
+            </div>
+
+            <!-- Three columns of insights -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12 scroll-reveal" style="transition-delay: 0.1s;">
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(245, 158, 11, 0.1);">
+                        <i data-lucide="award" class="w-5 h-5" style="color: #fbbf24;"></i>
+                    </div>
+                    <p class="font-medium mb-2">100+ Innovation Awards</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Chinese brands earned 40% of total CES awards—TCL alone won 50+.</p>
+                </div>
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(245, 158, 11, 0.1);">
+                        <i data-lucide="trending-up" class="w-5 h-5" style="color: #fbbf24;"></i>
+                    </div>
+                    <p class="font-medium mb-2">Technical excellence achieved</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">TCL's 10,000 nit display, Hisense's RGB MiniLED—spec parity is here.</p>
+                </div>
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(245, 158, 11, 0.1);">
+                        <i data-lucide="dollar-sign" class="w-5 h-5" style="color: #fbbf24;"></i>
+                    </div>
+                    <p class="font-medium mb-2">Brand premium still elusive</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Technical excellence ≠ brand equity. Samsung and Apple still command price premiums.</p>
+                </div>
+            </div>
+
+            <!-- Quote Card - Full Width -->
+            <div class="scroll-reveal" style="transition-delay: 0.2s;">
+                <div class="card p-8 theme-card" style="--theme-color: #f59e0b;">
+                    <span class="quote-mark">"</span>
+                    <div class="relative z-10 pt-6 text-center">
+                        <p class="text-xl font-light leading-relaxed max-w-2xl mx-auto mb-6" style="color: #fcd34d;">
+                            The quality gap has closed. The brand gap remains—but for how long? The question now is whether Chinese brands can build premium brand equity to match their technical excellence.
+                        </p>
+                        <div class="strategic-question-large mx-auto text-left">
+                            <p class="strategic-question-label">Strategic Question</p>
+                            <p class="strategic-question-text">If you're an established brand—how will you compete when Chinese competitors match your technology at lower price points?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Theme 3: Physical AI -->
+    <section class="py-24">
+        <div class="max-w-4xl mx-auto px-6">
+            <!-- Header -->
+            <div class="text-center mb-12 scroll-reveal">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <span class="text-sm font-medium px-3 py-1 rounded-full" style="background: rgba(139, 92, 246, 0.2); color: #a78bfa;">THEME 03</span>
+                </div>
+                <h2 class="font-display text-h1 font-light mb-6">
+                    Physical AI: The Next Brand Battlefield
+                </h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
+                    AI is escaping the screen. Robots, smart home agents, and embodied AI systems are creating entirely new categories—and new brand experience canvases.
+                </p>
+            </div>
+
+            <!-- Three columns of insights -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12 scroll-reveal" style="transition-delay: 0.1s;">
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(139, 92, 246, 0.1);">
+                        <i data-lucide="bot" class="w-5 h-5" style="color: #a78bfa;"></i>
+                    </div>
+                    <p class="font-medium mb-2">LG's AI Agent Home</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">A vision of AI agents orchestrating your entire living environment.</p>
+                </div>
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(139, 92, 246, 0.1);">
+                        <i data-lucide="home" class="w-5 h-5" style="color: #a78bfa;"></i>
+                    </div>
+                    <p class="font-medium mb-2">Samsung's Agentic Home</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">AI that anticipates needs and acts autonomously across devices.</p>
+                </div>
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(139, 92, 246, 0.1);">
+                        <i data-lucide="cpu" class="w-5 h-5" style="color: #a78bfa;"></i>
+                    </div>
+                    <p class="font-medium mb-2">NVIDIA World Foundation</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Physical AI as the next computing platform—from gaming to industrial.</p>
+                </div>
+            </div>
+
+            <!-- Quote Card - Full Width -->
+            <div class="scroll-reveal" style="transition-delay: 0.2s;">
+                <div class="card p-8 theme-card" style="--theme-color: #8b5cf6;">
+                    <span class="quote-mark">"</span>
+                    <div class="relative z-10 pt-6 text-center">
+                        <p class="text-xl font-light leading-relaxed max-w-2xl mx-auto mb-6" style="color: #c4b5fd;">
+                            When AI has a physical presence, brand experience extends beyond screens into spaces. Trust and safety become core brand differentiators, not just features.
+                        </p>
+                        <div class="strategic-question-large mx-auto text-left">
+                            <p class="strategic-question-label">Strategic Question</p>
+                            <p class="strategic-question-text">How does your brand show up when AI enters physical spaces?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Theme 4: Sustainability Authenticity -->
+    <section class="py-24" style="background: #0a0a0a;">
+        <div class="max-w-4xl mx-auto px-6">
+            <!-- Header -->
+            <div class="text-center mb-12 scroll-reveal">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <span class="text-sm font-medium px-3 py-1 rounded-full" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">THEME 04</span>
+                </div>
+                <h2 class="font-display text-h1 font-light mb-6">
+                    The Sustainability Authenticity Gap
+                </h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
+                    Sustainability has moved from marketing claim to architectural imperative. The gap between stated values and actual practices is becoming verifiable.
+                </p>
+            </div>
+
+            <!-- Three columns of insights -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12 scroll-reveal" style="transition-delay: 0.1s;">
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(16, 185, 129, 0.1);">
+                        <i data-lucide="check-circle" class="w-5 h-5" style="color: #34d399;"></i>
+                    </div>
+                    <p class="font-medium mb-2">Verification is now possible</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Third-party certifications and carbon tracking make claims auditable.</p>
+                </div>
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(16, 185, 129, 0.1);">
+                        <i data-lucide="shield" class="w-5 h-5" style="color: #34d399;"></i>
+                    </div>
+                    <p class="font-medium mb-2">Certifications drive purchasing</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">EPEAT, Energy Star becoming procurement requirements.</p>
+                </div>
+                <div class="card p-5 text-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(16, 185, 129, 0.1);">
+                        <i data-lucide="recycle" class="w-5 h-5" style="color: #34d399;"></i>
+                    </div>
+                    <p class="font-medium mb-2">Material innovation leads</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Lenovo's 50% recycled aluminum, ASUS's Ceraluminum™.</p>
+                </div>
+            </div>
+
+            <!-- Quote Card - Full Width -->
+            <div class="scroll-reveal" style="transition-delay: 0.2s;">
+                <div class="card p-8 theme-card" style="--theme-color: #10b981;">
+                    <span class="quote-mark">"</span>
+                    <div class="relative z-10 pt-6 text-center">
+                        <p class="text-xl font-light leading-relaxed max-w-2xl mx-auto mb-6" style="color: #6ee7b7;">
+                            The brands leading at CES 2026—Lenovo, ASUS, Samsung, LG—are building sustainability into product architecture, not just marketing copy. Consumers are paying attention.
+                        </p>
+                        <div class="strategic-question-large mx-auto text-left">
+                            <p class="strategic-question-label">Strategic Question</p>
+                            <p class="strategic-question-text">Is your sustainability story built into product architecture—or just marketing copy?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Theme 5: Experience Economy 3.0 -->
+    <section class="py-24">
+        <div class="max-w-4xl mx-auto px-6">
+            <!-- Header -->
+            <div class="text-center mb-12 scroll-reveal">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <span class="text-sm font-medium px-3 py-1 rounded-full" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">THEME 05</span>
+                </div>
+                <h2 class="font-display text-h1 font-light mb-6">
+                    Experience Economy 3.0
+                </h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
+                    We've moved from products (1.0) to ecosystems (2.0). Now AI-orchestrated experiences across devices create entirely new forms of brand interaction.
+                </p>
+            </div>
+
+            <!-- Three columns of insights -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12 scroll-reveal" style="transition-delay: 0.1s;">
+                <div class="card p-5 text-center">
+                    <div class="flex items-center justify-center gap-2 mb-4">
+                        <span class="text-xs font-medium px-2 py-0.5 rounded" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">1.0</span>
+                    </div>
+                    <p class="font-medium mb-2">Product Era</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Compete on features, specs, and price. Brand is secondary to product performance.</p>
+                </div>
+                <div class="card p-5 text-center">
+                    <div class="flex items-center justify-center gap-2 mb-4">
+                        <span class="text-xs font-medium px-2 py-0.5 rounded" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">2.0</span>
+                    </div>
+                    <p class="font-medium mb-2">Ecosystem Era</p>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Lock-in through device interconnection. Brand creates switching costs through integration.</p>
+                </div>
+                <div class="card p-5 text-center border" style="border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.05);">
+                    <div class="flex items-center justify-center gap-2 mb-4">
+                        <span class="text-xs font-medium px-2 py-0.5 rounded" style="background: rgba(59, 130, 246, 0.3); color: #60a5fa;">3.0</span>
+                    </div>
+                    <p class="font-medium mb-2">Experience Era</p>
+                    <p class="text-sm" style="color: var(--text-secondary);">AI agents orchestrate personalized experiences. Brand becomes the experience layer.</p>
+                </div>
+            </div>
+
+            <!-- Quote Card - Full Width -->
+            <div class="scroll-reveal" style="transition-delay: 0.2s;">
+                <div class="card p-8 theme-card" style="--theme-color: #3b82f6;">
+                    <span class="quote-mark">"</span>
+                    <div class="relative z-10 pt-6 text-center">
+                        <p class="text-xl font-light leading-relaxed max-w-2xl mx-auto mb-6" style="color: #93c5fd;">
+                            In Experience Economy 3.0, your brand isn't what you say—it's how your AI agent behaves. Every automated interaction is a brand moment.
+                        </p>
+                        <div class="strategic-question-large mx-auto text-left">
+                            <p class="strategic-question-label">Strategic Question</p>
+                            <p class="strategic-question-text">What does your brand personality look like when expressed through autonomous AI agents?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary & CTA -->
+    <section class="py-24" style="background: #0a0a0a;">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-display text-h1 font-light mb-6">
+                    Five Questions for Your Next Strategy Session
+                </h2>
+                <p class="text-lg" style="color: var(--text-secondary);">
+                    CES 2026 signals where brand competition is heading. These are the conversations every leadership team should be having.
+                </p>
+            </div>
+
+            <div class="space-y-4 mb-16 scroll-reveal">
+                <div class="flex items-start gap-4 p-6 rounded-xl card">
+                    <span class="text-2xl font-display font-light" style="color: #ef4444;">01</span>
+                    <p class="text-lg" style="color: var(--text-secondary);">What's our differentiation story when technology specifications commoditize?</p>
+                </div>
+                <div class="flex items-start gap-4 p-6 rounded-xl card">
+                    <span class="text-2xl font-display font-light" style="color: #f59e0b;">02</span>
+                    <p class="text-lg" style="color: var(--text-secondary);">How do we compete when Chinese brands match our technology at lower price points?</p>
+                </div>
+                <div class="flex items-start gap-4 p-6 rounded-xl card">
+                    <span class="text-2xl font-display font-light" style="color: #8b5cf6;">03</span>
+                    <p class="text-lg" style="color: var(--text-secondary);">How does our brand show up when AI enters physical spaces and everyday interactions?</p>
+                </div>
+                <div class="flex items-start gap-4 p-6 rounded-xl card">
+                    <span class="text-2xl font-display font-light" style="color: #10b981;">04</span>
+                    <p class="text-lg" style="color: var(--text-secondary);">Is our sustainability story built into product architecture or just marketing?</p>
+                </div>
+                <div class="flex items-start gap-4 p-6 rounded-xl card">
+                    <span class="text-2xl font-display font-light" style="color: #3b82f6;">05</span>
+                    <p class="text-lg" style="color: var(--text-secondary);">What does our brand personality look like when expressed through autonomous AI agents?</p>
+                </div>
+            </div>
+
+            <div class="cta-section rounded-2xl p-8 md:p-12 text-center scroll-reveal">
+                <h3 class="font-display text-h2 font-light mb-4">Ready to explore these questions?</h3>
+                <p class="text-lg mb-8" style="color: var(--text-secondary);">
+                    RedPeak helps technology brands navigate strategic transitions with clarity and creativity.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="mailto:hello@red-peak.com" class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all hover:scale-105" style="background: white; color: black;">
+                        <i data-lucide="mail" class="w-4 h-4"></i>
+                        <span>Get in Touch</span>
+                    </a>
+                    <a href="https://red-peak.com" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all hover:bg-white/10" style="border: 1px solid var(--border-medium); color: var(--text-primary);">
+                        <span>Visit red-peak.com</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t" style="border-color: var(--border-subtle);">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-6 w-auto opacity-50">
+                    <span class="text-sm" style="color: var(--text-tertiary);">RedPeak Intelligence</span>
+                </div>
+                <p class="text-sm" style="color: var(--text-muted);">
+                    © 2026 RedPeak. All rights reserved. | CES 2026 Strategic Intelligence Report
+                </p>
+                <p class="text-xs" style="color: var(--text-muted);">
+                    "We build brands that bond."
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

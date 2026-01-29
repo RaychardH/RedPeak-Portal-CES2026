@@ -1,0 +1,10 @@
+{
+  "name": "redpeak-portal-ces2026",
+  "version": "1.0.0",
+  "description": "RedPeak Intelligence Portal - CES 2026",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve public",
+    "build": "echo 'Static site - no build needed'"
+  }
+}

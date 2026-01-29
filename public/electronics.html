@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronics View | CES 2026 | RedPeak Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg': { 'primary': '#000000', 'secondary': '#0a0a0a', 'tertiary': '#111111' },
+                        'accent': { 'gold': '#d4af37', 'blue': '#3b82f6', 'green': '#10b981', 'red': '#ef4444', 'purple': '#8b5cf6' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ease-quint: cubic-bezier(0.22, 1, 0.36, 1);
+            --text-primary: rgba(255, 255, 255, 0.90);
+            --text-secondary: rgba(255, 255, 255, 0.70);
+            --text-tertiary: rgba(255, 255, 255, 0.50);
+            --text-muted: rgba(255, 255, 255, 0.30);
+            --border-subtle: rgba(255, 255, 255, 0.10);
+            --border-medium: rgba(255, 255, 255, 0.20);
+            --border-strong: rgba(255, 255, 255, 0.30);
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #000; color: var(--text-primary); }
+        .font-display { font-family: 'Playfair Display', Georgia, serif; }
+        .text-hero { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; }
+        .text-h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15; }
+        .text-h2 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.2; }
+        .text-h3 { font-size: clamp(1.125rem, 2vw, 1.375rem); line-height: 1.3; }
+
+        .nav-pill { padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; transition: all 0.2s ease; color: var(--text-secondary); }
+        .nav-pill:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+        .nav-pill.active { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+
+        .card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: 0.75rem; transition: all 0.5s var(--ease-quint); }
+        .card:hover { border-color: var(--border-medium); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); }
+
+        .stat-highlight { border-left: 3px solid; padding-left: 1rem; }
+        .stat-positive { border-color: #10b981; }
+        .stat-warning { border-color: #f59e0b; }
+        .stat-negative { border-color: #ef4444; }
+        .stat-neutral { border-color: rgba(255,255,255,0.3); }
+
+        .imperative-card { position: relative; overflow: hidden; }
+        .imperative-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-color, #3b82f6); }
+
+        .fade-in { animation: fadeIn 0.8s var(--ease-quint) forwards; opacity: 0; }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s var(--ease-quint), transform 0.8s var(--ease-quint); }
+        .scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
+
+        .market-position { display: flex; align-items: center; gap: 1rem; padding: 1rem; border-radius: 0.5rem; transition: all 0.3s ease; }
+        .market-position:hover { background: rgba(255,255,255,0.03); }
+        .position-winner { background: linear-gradient(90deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%); }
+        .position-vulnerable { background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, transparent 100%); }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Navigation -->
+        <nav class="fixed top-0 left-0 right-0 z-50 no-print" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-7 w-auto">
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="redpeak-pov.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                    <span>Our PoV</span>
+                </a>
+                <div class="relative group">
+                    <button class="nav-pill flex items-center gap-2" style="background: rgba(255,255,255,0.1);">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                        <span>Insights</span>
+                        <i data-lucide="chevron-down" class="w-3 h-3 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute top-full right-0 mt-2 py-2 min-w-[180px] rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" style="background: rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                        <a href="keynotes.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="mic" class="w-4 h-4"></i>
+                            <span>Keynote Intelligence</span>
+                        </a>
+                        <a href="electronics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors bg-white/5" style="color: var(--text-primary);">
+                            <i data-lucide="monitor" class="w-4 h-4"></i>
+                            <span>Electronics View</span>
+                        </a>
+                        <a href="odm.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="factory" class="w-4 h-4"></i>
+                            <span>ODM View</span>
+                        </a>
+                        <a href="innovation-awards.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="award" class="w-4 h-4"></i>
+                            <span>Innovation Awards</span>
+                        </a>
+                        <a href="sustainability.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="leaf" class="w-4 h-4"></i>
+                            <span>Sustainability</span>
+                        </a>
+                        <a href="automobile.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="car" class="w-4 h-4"></i>
+                            <span>Automobile</span>
+                        </a>
+                        <a href="healthcare.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+                            <span>Healthcare</span>
+                        </a>
+                        <a href="robotics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="bot" class="w-4 h-4"></i>
+                            <span>Robotics</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-[60vh] flex items-center pt-24 pb-16 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 60%);"></div>
+        </div>
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="flex items-center gap-3 mb-6 fade-in">
+                <i data-lucide="monitor" class="w-5 h-5" style="color: var(--text-tertiary);"></i>
+                <span class="text-sm tracking-widest" style="color: var(--text-tertiary); letter-spacing: 0.2em;">ELECTRONICS VIEW</span>
+            </div>
+            <h1 class="font-display text-hero font-light mb-8 fade-in stagger-1">
+                What CES 2026 Means<br>for Electronics Brands
+            </h1>
+            <p class="text-xl font-light max-w-3xl mb-8 fade-in stagger-2" style="color: var(--text-secondary);">
+                Strategic intelligence for PC manufacturers, display brands, and consumer electronics companies navigating the AI commoditization era.
+            </p>
+            <div class="flex flex-wrap gap-6 fade-in stagger-3">
+                <div class="stat-highlight stat-neutral">
+                    <p class="text-xs mb-1" style="color: var(--text-tertiary);">MARKET GROWTH</p>
+                    <p class="text-2xl font-light">-9%</p>
+                    <p class="text-xs" style="color: var(--text-muted);">2026 Forecast (IDC)</p>
+                </div>
+                <div class="stat-highlight stat-positive">
+                    <p class="text-xs mb-1" style="color: var(--text-tertiary);">PREMIUM SEGMENT</p>
+                    <p class="text-2xl font-light">+15%</p>
+                    <p class="text-xs" style="color: var(--text-muted);">Growing opportunity</p>
+                </div>
+                <div class="stat-highlight stat-warning">
+                    <p class="text-xs mb-1" style="color: var(--text-tertiary);">MID-TIER</p>
+                    <p class="text-2xl font-light">-5%</p>
+                    <p class="text-xs" style="color: var(--text-muted);">Squeezed segment</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executive Summary -->
+    <section class="py-20" style="background: #0a0a0a;">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 scroll-reveal">
+                    <h2 class="font-display text-h2 font-light mb-6">Executive Summary</h2>
+                    <div class="space-y-4 text-lg" style="color: var(--text-secondary);">
+                        <p>CES 2026 marks the moment when AI capabilities in consumer electronics reached commodity status. Every major chip vendor now ships NPUs with comparable performance—Intel at 180 TOPS, Qualcomm at 80 TOPS, AMD at 60 TOPS. The AI PC positioning race is effectively over.</p>
+                        <p>For electronics brands, this creates an urgent strategic question: <strong class="text-white">When technology specifications converge, what becomes your competitive moat?</strong></p>
+                        <p>The market is consolidating rapidly. Winners are pulling ahead through ecosystem play, premium positioning, and genuine innovation. Mid-tier brands face an existential choice: move up to premium or compete on value—the middle is disappearing.</p>
+                    </div>
+                </div>
+                <div class="scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="card p-6">
+                        <h3 class="font-medium mb-4">Key Takeaways</h3>
+                        <ul class="space-y-3 text-sm" style="color: var(--text-secondary);">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #ef4444;"></i>
+                                <span>AI specs no longer differentiate—all vendors have "enough" NPU power</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="trending-up" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #10b981;"></i>
+                                <span>Premium (+15%) and value (+12%) segments growing; mid-tier (-5%) squeezed</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="globe" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #f59e0b;"></i>
+                                <span>Chinese brands won 40% of CES Innovation Awards—quality parity achieved</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="leaf" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #10b981;"></i>
+                                <span>Sustainability moved from marketing to product architecture requirement</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Landscape Shift -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-display text-h1 font-light mb-4">The Landscape Shift</h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">Three forces reshaping competitive dynamics for electronics brands.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Force 1: AI Commoditization -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background: rgba(239, 68, 68, 0.1);">
+                        <i data-lucide="cpu" class="w-6 h-6" style="color: #f87171;"></i>
+                    </div>
+                    <h3 class="text-h3 font-medium mb-4">AI Commoditization</h3>
+                    <p class="mb-6" style="color: var(--text-secondary);">NPU specifications have converged. The AI PC positioning war is over—everyone has "enough" AI capability.</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <span style="color: var(--text-tertiary);">Intel Lunar Lake</span>
+                            <span class="font-mono">180 TOPS</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span style="color: var(--text-tertiary);">Qualcomm X Elite</span>
+                            <span class="font-mono">80 TOPS</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span style="color: var(--text-tertiary);">AMD Strix Point</span>
+                            <span class="font-mono">60 TOPS</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t" style="border-color: var(--border-subtle);">
+                        <p class="text-xs italic" style="color: var(--text-muted);">"Consumers are not buying based on AI" — Dell</p>
+                    </div>
+                </div>
+
+                <!-- Force 2: Market Consolidation -->
+                <div class="card p-6 scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background: rgba(245, 158, 11, 0.1);">
+                        <i data-lucide="trending-up" class="w-6 h-6" style="color: #fbbf24;"></i>
+                    </div>
+                    <h3 class="text-h3 font-medium mb-4">Market Consolidation</h3>
+                    <p class="mb-6" style="color: var(--text-secondary);">The PC market is splitting into clear winners and vulnerable players. Scale and differentiation determine survival.</p>
+                    <div class="space-y-2">
+                        <div class="market-position position-winner">
+                            <span class="text-sm font-medium">Lenovo</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full ml-auto" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">+16.6%</span>
+                        </div>
+                        <div class="market-position position-winner">
+                            <span class="text-sm font-medium">Apple</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full ml-auto" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">+21.3%</span>
+                        </div>
+                        <div class="market-position position-winner">
+                            <span class="text-sm font-medium">ASUS</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full ml-auto" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">+12.4%</span>
+                        </div>
+                        <div class="market-position position-vulnerable">
+                            <span class="text-sm font-medium">Acer</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full ml-auto" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">+4.2%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Force 3: Chinese Brand Emergence -->
+                <div class="card p-6 scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background: rgba(139, 92, 246, 0.1);">
+                        <i data-lucide="award" class="w-6 h-6" style="color: #a78bfa;"></i>
+                    </div>
+                    <h3 class="text-h3 font-medium mb-4">Chinese Brand Emergence</h3>
+                    <p class="mb-6" style="color: var(--text-secondary);">Technical excellence achieved. Chinese brands won 40% of CES Innovation Awards—quality parity is here.</p>
+                    <div class="space-y-3">
+                        <div class="p-3 rounded-lg" style="background: rgba(139, 92, 246, 0.05);">
+                            <p class="font-medium text-sm mb-1">TCL</p>
+                            <p class="text-xs" style="color: var(--text-tertiary);">50+ CES awards, 10,000 nit display leadership</p>
+                        </div>
+                        <div class="p-3 rounded-lg" style="background: rgba(139, 92, 246, 0.05);">
+                            <p class="font-medium text-sm mb-1">Hisense</p>
+                            <p class="text-xs" style="color: var(--text-tertiary);">RGB MiniLED evo, Microsoft Copilot integration</p>
+                        </div>
+                        <div class="p-3 rounded-lg" style="background: rgba(139, 92, 246, 0.05);">
+                            <p class="font-medium text-sm mb-1">Roborock</p>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Industry-leading robotic vacuum technology</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Imperatives -->
+    <section class="py-20" style="background: #0a0a0a;">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-display text-h1 font-light mb-4">Strategic Imperatives</h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">Four priorities for electronics brands navigating the post-AI-commoditization landscape.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Imperative 1 -->
+                <div class="card imperative-card p-8 scroll-reveal" style="--accent-color: #3b82f6;">
+                    <div class="pl-4">
+                        <span class="text-xs font-medium tracking-wider" style="color: #60a5fa;">IMPERATIVE 01</span>
+                        <h3 class="text-h3 font-medium mt-2 mb-4">Differentiate Beyond Specs</h3>
+                        <p class="mb-6" style="color: var(--text-secondary);">When every competitor has comparable AI capabilities, differentiation must come from brand experience, design excellence, and ecosystem value.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #60a5fa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Build distinctive brand experiences that transcend product features</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #60a5fa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Invest in design language that creates emotional connection</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #60a5fa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Develop software/service layers that add genuine value</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 rounded-lg" style="background: rgba(59, 130, 246, 0.05);">
+                            <p class="text-xs font-medium mb-1" style="color: #60a5fa;">BENCHMARK</p>
+                            <p class="text-sm" style="color: var(--text-tertiary);">Apple's ecosystem lock-in, ASUS's design innovation, Lenovo's enterprise credibility</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imperative 2 -->
+                <div class="card imperative-card p-8 scroll-reveal" style="--accent-color: #10b981; transition-delay: 0.1s;">
+                    <div class="pl-4">
+                        <span class="text-xs font-medium tracking-wider" style="color: #34d399;">IMPERATIVE 02</span>
+                        <h3 class="text-h3 font-medium mt-2 mb-4">Pick Your Lane: Premium or Value</h3>
+                        <p class="mb-6" style="color: var(--text-secondary);">The mid-tier is being squeezed from both ends. Successful brands are making decisive moves toward either premium differentiation or value optimization.</p>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="p-4 rounded-lg text-center" style="background: rgba(16, 185, 129, 0.05);">
+                                <p class="text-2xl font-light mb-1" style="color: #34d399;">+15%</p>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Premium segment growth</p>
+                            </div>
+                            <div class="p-4 rounded-lg text-center" style="background: rgba(16, 185, 129, 0.05);">
+                                <p class="text-2xl font-light mb-1" style="color: #34d399;">+12%</p>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Value segment growth</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-lg" style="background: rgba(239, 68, 68, 0.05);">
+                            <p class="text-xs font-medium mb-1" style="color: #f87171;">WARNING</p>
+                            <p class="text-sm" style="color: var(--text-tertiary);">Mid-tier brands face compression from Chinese value leaders below and established premium brands above</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imperative 3 -->
+                <div class="card imperative-card p-8 scroll-reveal" style="--accent-color: #f59e0b; transition-delay: 0.2s;">
+                    <div class="pl-4">
+                        <span class="text-xs font-medium tracking-wider" style="color: #fbbf24;">IMPERATIVE 03</span>
+                        <h3 class="text-h3 font-medium mt-2 mb-4">Build Sustainability as Architecture</h3>
+                        <p class="mb-6" style="color: var(--text-secondary);">Sustainability is transitioning from marketing claim to procurement requirement. Leading brands are building it into product DNA.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 rounded-lg" style="background: rgba(245, 158, 11, 0.05);">
+                                <span class="text-sm">Lenovo</span>
+                                <span class="text-xs" style="color: var(--text-tertiary);">50% recycled aluminum</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 rounded-lg" style="background: rgba(245, 158, 11, 0.05);">
+                                <span class="text-sm">ASUS</span>
+                                <span class="text-xs" style="color: var(--text-tertiary);">Ceraluminum™ material innovation</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 rounded-lg" style="background: rgba(245, 158, 11, 0.05);">
+                                <span class="text-sm">Acer Vero</span>
+                                <span class="text-xs" style="color: var(--text-tertiary);">PCR plastics, first-mover advantage</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 rounded-lg" style="background: rgba(245, 158, 11, 0.05);">
+                            <p class="text-xs font-medium mb-1" style="color: #fbbf24;">TREND</p>
+                            <p class="text-sm" style="color: var(--text-tertiary);">EPEAT, Energy Star, and circular economy certifications becoming procurement gates</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imperative 4 -->
+                <div class="card imperative-card p-8 scroll-reveal" style="--accent-color: #8b5cf6; transition-delay: 0.3s;">
+                    <div class="pl-4">
+                        <span class="text-xs font-medium tracking-wider" style="color: #a78bfa;">IMPERATIVE 04</span>
+                        <h3 class="text-h3 font-medium mt-2 mb-4">Master the Ecosystem Play</h3>
+                        <p class="mb-6" style="color: var(--text-secondary);">Isolated products are becoming commodities. Value creation is shifting to integrated ecosystems of devices, software, and services.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #a78bfa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Cross-device experiences (phone + laptop + tablet + wearable)</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #a78bfa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Software services that enhance hardware value (gaming, creation, productivity)</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check" class="w-4 h-4 mt-1 flex-shrink-0" style="color: #a78bfa;"></i>
+                                <span class="text-sm" style="color: var(--text-secondary);">Platform partnerships (Google, Microsoft, NVIDIA) that extend capabilities</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 rounded-lg" style="background: rgba(139, 92, 246, 0.05);">
+                            <p class="text-xs font-medium mb-1" style="color: #a78bfa;">LEADERS</p>
+                            <p class="text-sm" style="color: var(--text-tertiary);">Samsung SmartThings, LG AI Agent Home, ASUS ROG Ecosystem</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Opportunities -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-display text-h1 font-light mb-4">Category Opportunities</h2>
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">Emerging spaces where differentiation is still possible.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Opportunity 1 -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #f472b6 0%, #8b5cf6 100%);">
+                            <i data-lucide="palette" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h3 class="text-h3 font-medium">Creator-Gaming Convergence</h3>
+                    </div>
+                    <p class="mb-6" style="color: var(--text-secondary);">High-performance hardware increasingly targets both gaming and creative workflows. Same specs, different positioning.</p>
+                    <div class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                        <p>• ASUS ProArt-ROG crossover lines</p>
+                        <p>• Acer Predator Helios dual positioning</p>
+                        <p>• Content creator as growth segment</p>
+                    </div>
+                </div>
+
+                <!-- Opportunity 2 -->
+                <div class="card p-6 scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);">
+                            <i data-lucide="tv" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h3 class="text-h3 font-medium">Display Innovation</h3>
+                    </div>
+                    <p class="mb-6" style="color: var(--text-secondary);">Form factor innovation creating new premium tiers and usage scenarios.</p>
+                    <div class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                        <p>• Foldable/TriFold displays (Samsung, Lenovo)</p>
+                        <p>• Transparent OLED applications (LG, Samsung)</p>
+                        <p>• Ultra-bright MiniLED (TCL 10,000 nits)</p>
+                        <p>• Rollable screens (LG premium positioning)</p>
+                    </div>
+                </div>
+
+                <!-- Opportunity 3 -->
+                <div class="card p-6 scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);">
+                            <i data-lucide="bot" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h3 class="text-h3 font-medium">Physical AI / Robotics</h3>
+                    </div>
+                    <p class="mb-6" style="color: var(--text-secondary);">AI escaping screens into physical environments. New category creation opportunity.</p>
+                    <div class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                        <p>• Smart home AI agents (LG, Samsung)</p>
+                        <p>• Home robotics (Roborock, Samsung)</p>
+                        <p>• AR/VR devices (Meta, Samsung, Xreal)</p>
+                        <p>• Humanoid robots (50% Chinese exhibitors)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What This Means For You -->
+    <section class="py-20" style="background: #0a0a0a;">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-display text-h1 font-light mb-4">What This Means for You</h2>
+                <p class="text-lg" style="color: var(--text-secondary);">Strategic questions based on your market position.</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- For Premium Brands -->
+                <div class="card p-8 scroll-reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(16, 185, 129, 0.1);">
+                            <i data-lucide="crown" class="w-6 h-6" style="color: #34d399;"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-h3 font-medium mb-3">If You're a Premium Brand Leader</h3>
+                            <p class="mb-4" style="color: var(--text-secondary);">Your position is strong but not unassailable. Chinese competitors are closing the quality gap rapidly.</p>
+                            <ul class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                                <li>• How will you maintain price premium when feature parity arrives?</li>
+                                <li>• Is your ecosystem lock-in strong enough to resist switching?</li>
+                                <li>• Are you investing enough in brand experience vs. product features?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- For Mid-Tier Brands -->
+                <div class="card p-8 scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(245, 158, 11, 0.1);">
+                            <i data-lucide="alert-triangle" class="w-6 h-6" style="color: #fbbf24;"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-h3 font-medium mb-3">If You're in the Squeezed Middle</h3>
+                            <p class="mb-4" style="color: var(--text-secondary);">The most urgent strategic situation. Mid-tier brands are losing ground to both premium and value competitors.</p>
+                            <ul class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                                <li>• Can you credibly move upmarket, or is value optimization the path?</li>
+                                <li>• What's your differentiation story when you can't compete on price or prestige?</li>
+                                <li>• Are there niche segments (gaming, creator, sustainability) where you can dominate?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- For Value Brands -->
+                <div class="card p-8 scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(59, 130, 246, 0.1);">
+                            <i data-lucide="zap" class="w-6 h-6" style="color: #60a5fa;"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-h3 font-medium mb-3">If You're Competing on Value</h3>
+                            <p class="mb-4" style="color: var(--text-secondary);">Value competition is intensifying with Chinese brand quality parity. Scale and efficiency become critical.</p>
+                            <ul class="space-y-2 text-sm" style="color: var(--text-tertiary);">
+                                <li>• How will you compete with Chinese brands that have cost structure advantages?</li>
+                                <li>• Can you build brand equity while maintaining value positioning?</li>
+                                <li>• Are there geographic or channel advantages you can leverage?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t" style="border-color: var(--border-subtle);">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-6 w-auto opacity-50">
+                    <span class="text-sm" style="color: var(--text-tertiary);">RedPeak Intelligence</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="text-sm hover:text-white transition-colors" style="color: var(--text-tertiary);">Overview</a>
+                    <a href="redpeak-pov.html" class="text-sm hover:text-white transition-colors" style="color: var(--text-tertiary);">Our PoV</a>
+                    <a href="odm.html" class="text-sm hover:text-white transition-colors" style="color: var(--text-tertiary);">ODM View</a>
+                </div>
+                <p class="text-xs" style="color: var(--text-muted);">
+                    © 2026 RedPeak. CES 2026 Strategic Intelligence.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Scroll reveal animation
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('revealed');
+            });
+        }, observerOptions);
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

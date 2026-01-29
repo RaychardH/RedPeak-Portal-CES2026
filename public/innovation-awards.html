@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CES Innovation Awards Analysis 2024-2026 | RedPeak Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg': {
+                            'primary': '#000000',
+                            'secondary': '#0a0a0a',
+                            'tertiary': '#111111'
+                        },
+                        'accent': {
+                            'gold': '#d4af37',
+                            'blue': '#3b82f6',
+                            'green': '#10b981',
+                            'red': '#ef4444',
+                            'purple': '#8b5cf6',
+                            'amber': '#f59e0b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Manrope', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --color-primary: #000000;
+            --color-text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+            --text-muted: rgba(255, 255, 255, 0.3);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            font-family: var(--font-body);
+            background: var(--color-primary);
+            color: var(--color-text-primary);
+        }
+        .font-display { font-family: var(--font-display); }
+        .font-body { font-family: var(--font-body); }
+        .font-mono { font-family: var(--font-mono); }
+
+        .text-hero { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; }
+        .text-h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; }
+        .text-h2 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.3; }
+        .text-h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); line-height: 1.4; }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+        }
+
+        .nav-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+        }
+        .nav-pill:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.02) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 1rem;
+        }
+
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+        .trend-stable { color: #6b7280; }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media print { .no-print { display: none !important; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+        <nav class="fixed top-0 left-0 right-0 z-50 no-print" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-7 w-auto">
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="redpeak-pov.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                    <span>Our PoV</span>
+                </a>
+                <div class="relative group">
+                    <button class="nav-pill flex items-center gap-2" style="background: rgba(255,255,255,0.1);">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                        <span>Insights</span>
+                        <i data-lucide="chevron-down" class="w-3 h-3 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute top-full right-0 mt-2 py-2 min-w-[180px] rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" style="background: rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                        <a href="keynotes.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="mic" class="w-4 h-4"></i>
+                            <span>Keynote Intelligence</span>
+                        </a>
+                        <a href="electronics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="monitor" class="w-4 h-4"></i>
+                            <span>Electronics View</span>
+                        </a>
+                        <a href="odm.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="factory" class="w-4 h-4"></i>
+                            <span>ODM View</span>
+                        </a>
+                        <a href="innovation-awards.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors bg-white/5" style="color: var(--text-primary);">
+                            <i data-lucide="award" class="w-4 h-4"></i>
+                            <span>Innovation Awards</span>
+                        </a>
+                        <a href="sustainability.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="leaf" class="w-4 h-4"></i>
+                            <span>Sustainability</span>
+                        </a>
+                        <a href="automobile.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="car" class="w-4 h-4"></i>
+                            <span>Automobile</span>
+                        </a>
+                        <a href="healthcare.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+                            <span>Healthcare</span>
+                        </a>
+                        <a href="robotics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="bot" class="w-4 h-4"></i>
+                            <span>Robotics</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-[70vh] flex items-center justify-center relative overflow-hidden pt-20" style="background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);">
+        <div class="absolute inset-0 opacity-30">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+            <div class="flex items-center justify-center gap-3 mb-6">
+                <i data-lucide="award" class="w-10 h-10 text-amber-500"></i>
+                <span class="text-amber-500 font-mono text-sm tracking-widest uppercase">CES Innovation Awards</span>
+            </div>
+            <h1 class="font-display text-hero font-light mb-6">
+                <span class="text-amber-500">1,275</span> Awards Decoded
+            </h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto" style="color: var(--text-secondary);">
+                Three years of CES Innovation Awards (2024-2026) reveal the shifting landscape of consumer technology innovation.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <div class="stat-card px-6 py-4 text-center">
+                    <div class="text-3xl font-light text-amber-500">99</div>
+                    <div class="text-xs uppercase tracking-wider" style="color: var(--text-tertiary);">Best of Innovation</div>
+                </div>
+                <div class="stat-card px-6 py-4 text-center">
+                    <div class="text-3xl font-light text-blue-500">1,176</div>
+                    <div class="text-xs uppercase tracking-wider" style="color: var(--text-tertiary);">Honorees</div>
+                </div>
+                <div class="stat-card px-6 py-4 text-center">
+                    <div class="text-3xl font-light text-green-500">98.2%</div>
+                    <div class="text-xs uppercase tracking-wider" style="color: var(--text-tertiary);">Data Coverage</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Year-over-Year Trends -->
+    <section class="py-20 px-6" style="background: #0a0a0a;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12 scroll-reveal">
+                <h2 class="font-display text-h2 font-light mb-4">Year-over-Year Trends</h2>
+                <p style="color: var(--text-secondary);">Award volume and Best of Innovation rate analysis</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Chart -->
+                <div class="card p-6 scroll-reveal">
+                    <canvas id="yearlyTrendsChart" height="300"></canvas>
+                </div>
+
+                <!-- Key Metrics -->
+                <div class="space-y-4 scroll-reveal">
+                    <div class="card p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="font-mono text-sm" style="color: var(--text-tertiary);">2024</span>
+                            <span class="text-2xl font-light">419</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 h-2 rounded-full bg-white/10">
+                                <div class="h-full rounded-full bg-blue-500" style="width: 29%"></div>
+                            </div>
+                            <span class="text-xs font-mono">29 BoI (6.9%)</span>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="font-mono text-sm" style="color: var(--text-tertiary);">2025</span>
+                            <span class="text-2xl font-light">411</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 h-2 rounded-full bg-white/10">
+                                <div class="h-full rounded-full bg-purple-500" style="width: 27%"></div>
+                            </div>
+                            <span class="text-xs font-mono">27 BoI (6.6%)</span>
+                        </div>
+                    </div>
+
+                    <div class="card p-6 border-amber-500/30">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="font-mono text-sm text-amber-500">2026</span>
+                            <span class="text-2xl font-light">445</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 h-2 rounded-full bg-white/10">
+                                <div class="h-full rounded-full bg-amber-500" style="width: 43%"></div>
+                            </div>
+                            <span class="text-xs font-mono text-amber-500">43 BoI (9.7%)</span>
+                        </div>
+                        <div class="mt-3 text-xs text-green-500 flex items-center gap-1">
+                            <i data-lucide="trending-up" class="w-3 h-3"></i>
+                            <span>+59% BoI increase vs 2024</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Analysis -->
+    <section class="py-20 px-6" style="background: #000;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12 scroll-reveal">
+                <h2 class="font-display text-h2 font-light mb-4">Category Landscape</h2>
+                <p style="color: var(--text-secondary);">Top 10 categories by total awards (2024-2026)</p>
+            </div>
+
+            <div class="card p-8 mb-12 scroll-reveal">
+                <canvas id="categoryChart" height="400"></canvas>
+            </div>
+
+            <!-- Growth vs Decline -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Growth Categories -->
+                <div class="scroll-reveal">
+                    <h3 class="text-lg font-medium mb-4 flex items-center gap-2">
+                        <i data-lucide="trending-up" class="w-5 h-5 text-green-500"></i>
+                        Growing Categories
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="card p-4 flex items-center justify-between">
+                            <span>XR & Spatial Computing</span>
+                            <span class="text-green-500 font-mono">+50%</span>
+                        </div>
+                        <div class="card p-4 flex items-center justify-between">
+                            <span>Computer Hardware</span>
+                            <span class="text-green-500 font-mono">+31%</span>
+                        </div>
+                        <div class="card p-4 flex items-center justify-between">
+                            <span>Human Security</span>
+                            <span class="text-green-500 font-mono">+31%</span>
+                        </div>
+                        <div class="card p-4 flex items-center justify-between">
+                            <span>Artificial Intelligence</span>
+                            <span class="text-green-500 font-mono">+24%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Declining Categories -->
+                <div class="scroll-reveal">
+                    <h3 class="text-lg font-medium mb-4 flex items-center gap-2">
+                        <i data-lucide="trending-down" class="w-5 h-5 text-red-500"></i>
+                        Declining Categories
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="card p-4 flex items-center justify-between">
+                            <span>Accessibility & Longevity</span>
+                            <span class="text-red-500 font-mono">-45%</span>
+                        </div>
+                        <div class="card p-4 flex items-center justify-between">
+                            <span>Embedded Technologies</span>
+                            <span class="text-red-500 font-mono">-39%</span>
+                        </div>
+                        <div class="card p-4 flex items-center justify-between">
+                            <span>Sustainability & Energy</span>
+                            <span class="text-red-500 font-mono">-35%</span>
+                        </div>
+                        <div class="card p-4 flex items-center justify-between">
+                            <span>Digital Health</span>
+                            <span class="text-red-500 font-mono">-22%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Insights -->
+    <section class="py-20 px-6" style="background: #0a0a0a;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12 scroll-reveal">
+                <h2 class="font-display text-h2 font-light mb-4">Strategic Insights</h2>
+                <p style="color: var(--text-secondary);">Key findings from 3 years of innovation data</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- AI Dominance -->
+                <div class="insight-card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                            <i data-lucide="brain" class="w-5 h-5 text-blue-500"></i>
+                        </div>
+                        <h3 class="font-medium">AI Explosion</h3>
+                    </div>
+                    <p class="text-3xl font-light text-blue-500 mb-2">+84.5%</p>
+                    <p class="text-sm" style="color: var(--text-secondary);">
+                        AI-related products grew from 116 to 214 awards. Nearly half of 2026 awards feature AI.
+                    </p>
+                </div>
+
+                <!-- Korea Dominance -->
+                <div class="insight-card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center">
+                            <i data-lucide="flag" class="w-5 h-5 text-red-500"></i>
+                        </div>
+                        <h3 class="font-medium">Korea Power</h3>
+                    </div>
+                    <p class="text-3xl font-light text-red-500 mb-2">16.5%</p>
+                    <p class="text-sm" style="color: var(--text-secondary);">
+                        Korean companies claim 211 total awards. Samsung + LG alone: 129 awards (10%+).
+                    </p>
+                </div>
+
+                <!-- Sustainability Cooling -->
+                <div class="insight-card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                            <i data-lucide="leaf" class="w-5 h-5 text-green-500"></i>
+                        </div>
+                        <h3 class="font-medium">Sustainability Cooling</h3>
+                    </div>
+                    <p class="text-3xl font-light text-green-500 mb-2">-35%</p>
+                    <p class="text-sm" style="color: var(--text-secondary);">
+                        Sustainability category declined as it becomes table stakes, not a differentiator.
+                    </p>
+                </div>
+
+                <!-- Beauty Tech Rise -->
+                <div class="insight-card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-pink-500"></i>
+                        </div>
+                        <h3 class="font-medium">Beauty Tech Rise</h3>
+                    </div>
+                    <p class="text-3xl font-light text-pink-500 mb-2">L'Oreal: 7</p>
+                    <p class="text-sm" style="color: var(--text-secondary);">
+                        L'Oreal's first major CES appearance signals beauty tech as new battleground.
+                    </p>
+                </div>
+
+                <!-- XR Revival -->
+                <div class="insight-card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                            <i data-lucide="glasses" class="w-5 h-5 text-purple-500"></i>
+                        </div>
+                        <h3 class="font-medium">XR Revival</h3>
+                    </div>
+                    <p class="text-3xl font-light text-purple-500 mb-2">+50%</p>
+                    <p class="text-sm" style="color: var(--text-secondary);">
+                        XR/Spatial Computing rebounds with Apple Vision Pro driving renewed confidence.
+                    </p>
+                </div>
+
+                <!-- Robotics Steady -->
+                <div class="insight-card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                            <i data-lucide="bot" class="w-5 h-5 text-cyan-500"></i>
+                        </div>
+                        <h3 class="font-medium">Robot Keywords</h3>
+                    </div>
+                    <p class="text-3xl font-light text-cyan-500 mb-2">+125%</p>
+                    <p class="text-sm" style="color: var(--text-secondary);">
+                        "Robot" in product names grew from 4 to 9, signaling humanoid robot momentum.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Companies -->
+    <section class="py-20 px-6" style="background: #000;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12 scroll-reveal">
+                <h2 class="font-display text-h2 font-light mb-4">Innovation Leaders</h2>
+                <p style="color: var(--text-secondary);">Companies with most awards across 2024-2026</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Samsung -->
+                <div class="card p-6 text-center scroll-reveal">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-500/20 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-blue-500">S</span>
+                    </div>
+                    <h3 class="font-medium mb-1">Samsung Group</h3>
+                    <p class="text-3xl font-light text-blue-500">79</p>
+                    <p class="text-xs mt-2" style="color: var(--text-tertiary);">11 Best of Innovation</p>
+                    <p class="text-xs" style="color: var(--text-tertiary);">19 Categories</p>
+                </div>
+
+                <!-- LG -->
+                <div class="card p-6 text-center scroll-reveal">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/20 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-red-500">LG</span>
+                    </div>
+                    <h3 class="font-medium mb-1">LG Electronics</h3>
+                    <p class="text-3xl font-light text-red-500">50</p>
+                    <p class="text-xs mt-2" style="color: var(--text-tertiary);">7 Best of Innovation</p>
+                    <p class="text-xs" style="color: var(--text-tertiary);">16 Categories</p>
+                </div>
+
+                <!-- ASUS -->
+                <div class="card p-6 text-center scroll-reveal">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
+                        <span class="text-xl font-bold text-green-500">ASUS</span>
+                    </div>
+                    <h3 class="font-medium mb-1">ASUS</h3>
+                    <p class="text-3xl font-light text-green-500">24</p>
+                    <p class="text-xs mt-2" style="color: var(--text-tertiary);">2 Best of Innovation</p>
+                    <p class="text-xs" style="color: var(--text-tertiary);">7 Categories</p>
+                </div>
+
+                <!-- MSI -->
+                <div class="card p-6 text-center scroll-reveal">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-500/20 flex items-center justify-center">
+                        <span class="text-xl font-bold text-amber-500">MSI</span>
+                    </div>
+                    <h3 class="font-medium mb-1">MSI</h3>
+                    <p class="text-3xl font-light text-amber-500">15</p>
+                    <p class="text-xs mt-2" style="color: var(--text-tertiary);">1 Best of Innovation</p>
+                    <p class="text-xs" style="color: var(--text-tertiary);">4 Categories</p>
+                </div>
+            </div>
+
+            <!-- 3-Year Winners -->
+            <div class="mt-12 card p-6 scroll-reveal">
+                <h3 class="font-medium mb-4 flex items-center gap-2">
+                    <i data-lucide="trophy" class="w-5 h-5 text-amber-500"></i>
+                    Consistent Performers (All 3 Years)
+                </h3>
+                <div class="flex flex-wrap gap-3">
+                    <span class="px-4 py-2 rounded-full text-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">LG Electronics</span>
+                    <span class="px-4 py-2 rounded-full text-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">Samsung</span>
+                    <span class="px-4 py-2 rounded-full text-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">ASUS</span>
+                    <span class="px-4 py-2 rounded-full text-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">HP Inc.</span>
+                    <span class="px-4 py-2 rounded-full text-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">Garmin</span>
+                    <span class="px-4 py-2 rounded-full text-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">Qualcomm</span>
+                    <span class="px-4 py-2 rounded-full text-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">Lenovo</span>
+                    <span class="px-4 py-2 rounded-full text-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">Dell</span>
+                    <span class="px-4 py-2 rounded-full text-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">Anker</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2026 Best of Innovation Showcase -->
+    <section class="py-20 px-6" style="background: linear-gradient(180deg, #0a0a0a 0%, #000 100%);">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12 scroll-reveal">
+                <h2 class="font-display text-h2 font-light mb-4">
+                    <span class="text-amber-500">Best of Innovation</span> 2026
+                </h2>
+                <p style="color: var(--text-secondary);">Selected highlights from this year's top awards</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-5 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-8 h-8 rounded bg-amber-500/20 flex items-center justify-center">
+                            <i data-lucide="tv" class="w-4 h-4 text-amber-500"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-wider" style="color: var(--text-tertiary);">Imaging</span>
+                    </div>
+                    <h4 class="font-medium mb-1">LG SIGNATURE OLED T</h4>
+                    <p class="text-sm" style="color: var(--text-tertiary);">LG Electronics</p>
+                </div>
+
+                <div class="card p-5 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-8 h-8 rounded bg-amber-500/20 flex items-center justify-center">
+                            <i data-lucide="gamepad-2" class="w-4 h-4 text-amber-500"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-wider" style="color: var(--text-tertiary);">Gaming</span>
+                    </div>
+                    <h4 class="font-medium mb-1">Samsung Odyssey G60H</h4>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Samsung Electronics</p>
+                </div>
+
+                <div class="card p-5 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-8 h-8 rounded bg-amber-500/20 flex items-center justify-center">
+                            <i data-lucide="bot" class="w-4 h-4 text-amber-500"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-wider" style="color: var(--text-tertiary);">Robotics</span>
+                    </div>
+                    <h4 class="font-medium mb-1">MobED</h4>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Hyundai Motor</p>
+                </div>
+
+                <div class="card p-5 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-8 h-8 rounded bg-amber-500/20 flex items-center justify-center">
+                            <i data-lucide="cpu" class="w-4 h-4 text-amber-500"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-wider" style="color: var(--text-tertiary);">Hardware</span>
+                    </div>
+                    <h4 class="font-medium mb-1">RTX 5080 EXPERT</h4>
+                    <p class="text-sm" style="color: var(--text-tertiary);">MSI</p>
+                </div>
+
+                <div class="card p-5 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-8 h-8 rounded bg-amber-500/20 flex items-center justify-center">
+                            <i data-lucide="watch" class="w-4 h-4 text-amber-500"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-wider" style="color: var(--text-tertiary);">Fashion Tech</span>
+                    </div>
+                    <h4 class="font-medium mb-1">Snapdragon W5+ Gen 2</h4>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Qualcomm</p>
+                </div>
+
+                <div class="card p-5 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-8 h-8 rounded bg-amber-500/20 flex items-center justify-center">
+                            <i data-lucide="battery-charging" class="w-4 h-4 text-amber-500"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-wider" style="color: var(--text-tertiary);">Energy</span>
+                    </div>
+                    <h4 class="font-medium mb-1">520 Wh/kg Cell</h4>
+                    <p class="text-sm" style="color: var(--text-tertiary);">Amprius Technologies</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Takeaways -->
+    <section class="py-20 px-6" style="background: #0a0a0a;">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12 scroll-reveal">
+                <h2 class="font-display text-h2 font-light mb-4">Key Takeaways</h2>
+            </div>
+
+            <div class="space-y-4">
+                <div class="card p-6 flex items-start gap-4 scroll-reveal">
+                    <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                        <span class="text-blue-500 font-bold">1</span>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">AI is Table Stakes</h4>
+                        <p class="text-sm" style="color: var(--text-secondary);">
+                            AI has become a baseline capability, not a differentiator. Innovation now lies in AI application, not AI itself.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card p-6 flex items-start gap-4 scroll-reveal">
+                    <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                        <span class="text-purple-500 font-bold">2</span>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">XR & Robotics: Next Growth Wave</h4>
+                        <p class="text-sm" style="color: var(--text-secondary);">
+                            Spatial computing and robotics show the strongest growth momentum for 2026-2027.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card p-6 flex items-start gap-4 scroll-reveal">
+                    <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                        <span class="text-green-500 font-bold">3</span>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">B2B Rising</h4>
+                        <p class="text-sm" style="color: var(--text-secondary);">
+                            Enterprise Tech and Industrial categories see increasing recognition, signaling B2B tech maturation.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card p-6 flex items-start gap-4 scroll-reveal">
+                    <div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                        <span class="text-amber-500 font-bold">4</span>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">Health Tech Saturation</h4>
+                        <p class="text-sm" style="color: var(--text-secondary);">
+                            Digital Health enters saturation phase. Success requires precise niche positioning and differentiation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 text-center" style="background: #000; border-top: 1px solid rgba(255,255,255,0.05);">
+        <p class="text-sm" style="color: var(--text-tertiary);">
+            CES Innovation Awards Analysis 2024-2026 | Generated by RedPeak Intelligence
+        </p>
+        <p class="text-xs mt-2" style="color: var(--text-tertiary);">
+            Data coverage: 98.2% | Last updated: January 2026
+        </p>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Scroll reveal animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Yearly Trends Chart
+        const yearlyCtx = document.getElementById('yearlyTrendsChart').getContext('2d');
+        new Chart(yearlyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2024', '2025', '2026'],
+                datasets: [
+                    {
+                        label: 'Honoree',
+                        data: [390, 384, 402],
+                        backgroundColor: 'rgba(107, 114, 128, 0.5)',
+                        borderColor: 'rgba(107, 114, 128, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Best of Innovation',
+                        data: [29, 27, 43],
+                        backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                        borderColor: 'rgba(245, 158, 11, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: 'rgba(255,255,255,0.7)', font: { family: 'Manrope' } }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: 'rgba(255,255,255,0.5)' }
+                    },
+                    y: {
+                        stacked: true,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: 'rgba(255,255,255,0.5)' }
+                    }
+                }
+            }
+        });
+
+        // Category Chart
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        new Chart(categoryCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Digital Health',
+                    'Artificial Intelligence',
+                    'Sustainability & Energy',
+                    'Smart Home',
+                    'Mobile Devices',
+                    'Home Appliances',
+                    'Vehicle Tech',
+                    'Computer Hardware',
+                    'Accessibility',
+                    'Robotics'
+                ],
+                datasets: [
+                    {
+                        label: '2024',
+                        data: [50, 37, 34, 30, 26, 27, 27, 16, 20, 14],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2025',
+                        data: [48, 53, 32, 18, 25, 19, 19, 20, 16, 14],
+                        backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                        borderColor: 'rgba(139, 92, 246, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2026',
+                        data: [39, 46, 22, 26, 22, 26, 24, 21, 11, 14],
+                        backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                        borderColor: 'rgba(245, 158, 11, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: 'rgba(255,255,255,0.7)', font: { family: 'Manrope' } }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: 'rgba(255,255,255,0.5)' }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: 'rgba(255,255,255,0.7)', font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

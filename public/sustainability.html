@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainability Deep Dive | CES 2026 | RedPeak Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg': { 'primary': '#000000', 'secondary': '#0a0a0a', 'tertiary': '#111111' },
+                        'accent': { 'green': '#10b981', 'blue': '#3b82f6', 'amber': '#f59e0b', 'purple': '#8b5cf6' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Manrope', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+            --text-muted: rgba(255, 255, 255, 0.3);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+        }
+        body { font-family: var(--font-body); background: #000; color: var(--text-primary); }
+        .font-display { font-family: var(--font-display); }
+        .font-mono { font-family: var(--font-mono); }
+        .text-hero { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; }
+        .text-h2 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.3; }
+        .text-h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); line-height: 1.4; }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .pillar-card {
+            border-radius: 1.5rem;
+            transition: all 0.4s ease;
+        }
+        .pillar-card:hover { transform: translateY(-4px); }
+
+        .nav-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+        .nav-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); }
+
+        .insight-badge {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            color: #10b981;
+        }
+
+        .verdict-card {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.02) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        .expandable-content.expanded { max-height: 2000px; }
+
+        @media print { .no-print { display: none !important; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+        <nav class="fixed top-0 left-0 right-0 z-50 no-print" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-7 w-auto">
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="redpeak-pov.html" class="nav-pill flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                    <span>Our PoV</span>
+                </a>
+                <div class="relative group">
+                    <button class="nav-pill flex items-center gap-2" style="background: rgba(255,255,255,0.1);">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                        <span>Insights</span>
+                        <i data-lucide="chevron-down" class="w-3 h-3 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute top-full right-0 mt-2 py-2 min-w-[180px] rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" style="background: rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                        <a href="keynotes.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="mic" class="w-4 h-4"></i>
+                            <span>Keynote Intelligence</span>
+                        </a>
+                        <a href="electronics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="monitor" class="w-4 h-4"></i>
+                            <span>Electronics View</span>
+                        </a>
+                        <a href="odm.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="factory" class="w-4 h-4"></i>
+                            <span>ODM View</span>
+                        </a>
+                        <a href="innovation-awards.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="award" class="w-4 h-4"></i>
+                            <span>Innovation Awards</span>
+                        </a>
+                        <a href="sustainability.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors bg-white/5" style="color: var(--text-primary);">
+                            <i data-lucide="leaf" class="w-4 h-4"></i>
+                            <span>Sustainability</span>
+                        </a>
+                        <a href="automobile.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="car" class="w-4 h-4"></i>
+                            <span>Automobile</span>
+                        </a>
+                        <a href="healthcare.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+                            <span>Healthcare</span>
+                        </a>
+                        <a href="robotics.html" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5" style="color: var(--text-secondary);">
+                            <i data-lucide="bot" class="w-4 h-4"></i>
+                            <span>Robotics</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-[80vh] flex items-center justify-center relative overflow-hidden pt-20" style="background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);">
+        <!-- Background Effects -->
+        <div class="absolute inset-0 opacity-30">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl" style="background: rgba(16, 185, 129, 0.2);"></div>
+            <div class="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full blur-3xl" style="background: rgba(59, 130, 246, 0.15);"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+            <div class="flex items-center justify-center gap-3 mb-6">
+                <i data-lucide="leaf" class="w-10 h-10 text-green-500"></i>
+                <span class="text-green-500 font-mono text-sm tracking-widest uppercase">Sustainability Deep Dive</span>
+            </div>
+            <h1 class="font-display text-hero font-light mb-6" style="color: var(--text-primary);">
+                Beyond the <span class="text-green-500">Green Hype</span>
+            </h1>
+            <p class="text-xl mb-8 max-w-3xl mx-auto" style="color: var(--text-secondary);">
+                CES 2026 sustainability analysis across <span class="text-green-400 font-medium">Energy</span>, <span class="text-blue-400 font-medium">Mobility</span>, <span class="text-amber-400 font-medium">Circularity</span>, and <span class="text-purple-400 font-medium">Nature</span> — separating incremental progress from genuine breakthroughs.
+            </p>
+
+            <!-- Key Stat -->
+            <div class="flex flex-wrap justify-center gap-6 mb-12">
+                <div class="px-8 py-5 rounded-2xl text-center" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%); border: 1px solid rgba(239, 68, 68, 0.3);">
+                    <div class="text-4xl font-light text-red-400 mb-1">-35%</div>
+                    <div class="text-sm" style="color: var(--text-tertiary);">Sustainability Awards YoY</div>
+                </div>
+                <div class="px-8 py-5 rounded-2xl text-center" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <div class="text-4xl font-light text-green-400 mb-1">22</div>
+                    <div class="text-sm" style="color: var(--text-tertiary);">2026 Category Awards</div>
+                </div>
+                <div class="px-8 py-5 rounded-2xl text-center" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%); border: 1px solid rgba(245, 158, 11, 0.3);">
+                    <div class="text-4xl font-light text-amber-400 mb-1">1</div>
+                    <div class="text-sm" style="color: var(--text-tertiary);">Best of Innovation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executive Verdict -->
+    <section class="py-16 px-6" style="background: #0a0a0a;">
+        <div class="max-w-4xl mx-auto">
+            <div class="verdict-card p-8 rounded-2xl scroll-reveal">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(239, 68, 68, 0.2);">
+                        <i data-lucide="alert-triangle" class="w-6 h-6 text-red-400"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-medium mb-2" style="color: var(--text-primary);">The Honest Assessment</h2>
+                        <p class="text-lg" style="color: var(--text-secondary);">Your instinct is correct — CES 2026 sustainability was largely <span class="text-red-400 font-medium">incremental progress</span>, not paradigm shifts.</p>
+                    </div>
+                </div>
+                <div class="space-y-4 pl-16">
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="check" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                        <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">One genuine breakthrough:</strong> Amprius 520 Wh/kg battery — nearly 2x standard energy density</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="minus" class="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0"></i>
+                        <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Meaningful evolution:</strong> Hydrogen fuel cells, curved solar tiles, AI-powered energy management</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="x" class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0"></i>
+                        <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">The reality:</strong> Most "sustainable" products were feature updates to existing lines, not new categories</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Four Pillars Navigation -->
+    <section class="py-8 px-6 sticky top-16 z-40 no-print" style="background: rgba(0,0,0,0.9); backdrop-filter: blur(12px);">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="#energy" class="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)); border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981;">
+                    <i data-lucide="zap" class="w-4 h-4 inline mr-2"></i>Energy
+                </a>
+                <a href="#mobility" class="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1)); border: 1px solid rgba(59, 130, 246, 0.4); color: #3b82f6;">
+                    <i data-lucide="car" class="w-4 h-4 inline mr-2"></i>Mobility
+                </a>
+                <a href="#circularity" class="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1)); border: 1px solid rgba(245, 158, 11, 0.4); color: #f59e0b;">
+                    <i data-lucide="recycle" class="w-4 h-4 inline mr-2"></i>Circularity
+                </a>
+                <a href="#nature" class="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(139, 92, 246, 0.4); color: #8b5cf6;">
+                    <i data-lucide="trees" class="w-4 h-4 inline mr-2"></i>Nature
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PILLAR 1: ENERGY -->
+    <section id="energy" class="py-20 px-6 scroll-mt-32" style="background: #000;">
+        <div class="max-w-6xl mx-auto">
+            <!-- Section Header -->
+            <div class="flex items-center gap-4 mb-4 scroll-reveal">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.1));">
+                    <i data-lucide="zap" class="w-7 h-7 text-green-400"></i>
+                </div>
+                <div>
+                    <span class="text-sm font-mono tracking-wider text-green-500">PILLAR 1</span>
+                    <h2 class="font-display text-h2 font-light" style="color: var(--text-primary);">Energy & Batteries</h2>
+                </div>
+            </div>
+            <p class="text-lg mb-12 max-w-3xl scroll-reveal" style="color: var(--text-secondary);">
+                Battery technology, energy generation, and storage solutions — where the most significant breakthrough occurred.
+            </p>
+
+            <!-- Star Product: Amprius -->
+            <div class="mb-12 scroll-reveal">
+                <div class="p-8 rounded-2xl relative overflow-hidden" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.03) 100%); border: 2px solid rgba(16, 185, 129, 0.4);">
+                    <div class="absolute top-0 right-0 w-40 h-40 opacity-20" style="background: radial-gradient(circle, rgba(16, 185, 129, 0.5) 0%, transparent 70%);"></div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="insight-badge">Best of Innovation</span>
+                        <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(255,255,255,0.05); color: var(--text-tertiary);">BREAKTHROUGH</span>
+                    </div>
+                    <h3 class="text-2xl font-medium mb-2" style="color: var(--text-primary);">Amprius 520 Wh/kg Cell</h3>
+                    <p class="text-sm mb-4" style="color: var(--text-tertiary);">Amprius Technologies</p>
+                    <p class="text-lg mb-6" style="color: var(--text-secondary);">
+                        Record-breaking <span class="text-green-400 font-bold">520 Wh/kg</span> energy density — the highest known of any commercial battery. Nearly <span class="text-green-400 font-bold">2x the energy</span> of standard graphite-anode batteries.
+                    </p>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="p-4 rounded-xl" style="background: rgba(0,0,0,0.3);">
+                            <div class="text-2xl font-mono text-green-400 mb-1">520</div>
+                            <div class="text-xs" style="color: var(--text-tertiary);">Wh/kg Energy Density</div>
+                        </div>
+                        <div class="p-4 rounded-xl" style="background: rgba(0,0,0,0.3);">
+                            <div class="text-2xl font-mono text-green-400 mb-1">2x</div>
+                            <div class="text-xs" style="color: var(--text-tertiary);">vs Standard Batteries</div>
+                        </div>
+                        <div class="p-4 rounded-xl" style="background: rgba(0,0,0,0.3);">
+                            <div class="text-2xl font-mono text-green-400 mb-1">Si</div>
+                            <div class="text-xs" style="color: var(--text-tertiary);">Silicon Anode Tech</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6" style="border-top: 1px solid rgba(16, 185, 129, 0.2);">
+                        <p class="text-sm" style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Why it matters:</strong> This is the only genuinely new battery breakthrough at CES 2026. Silicon anode technology has been promised for years — Amprius delivered production-ready cells.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Energy Products -->
+            <h3 class="text-lg font-medium mb-6 scroll-reveal" style="color: var(--text-primary);">Other Notable Energy Technologies</h3>
+            <div class="grid md:grid-cols-2 gap-6 mb-12">
+                <!-- KEPCO HESS -->
+                <div class="card p-6 scroll-reveal cursor-pointer" onclick="toggleExpand(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(59, 130, 246, 0.2);">
+                                <i data-lucide="wind" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium" style="color: var(--text-primary);">HESS Hybrid Storage</h4>
+                                <p class="text-xs" style="color: var(--text-tertiary);">KEPCO</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-5 h-5 expand-icon transition-transform" style="color: var(--text-muted);"></i>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">Combines Aero & Hydro technologies for improved energy storage efficiency (targeting 70%+ RTE vs 50-70% conventional).</p>
+                    <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">Grid-Scale Storage</span>
+                    <div class="expandable-content">
+                        <div class="pt-4 mt-4" style="border-top: 1px solid var(--border-subtle);">
+                            <p class="text-sm" style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Assessment:</strong> Evolutionary, not revolutionary. Compressed air storage has been around — this improves efficiency but doesn't change the paradigm. Relevant for grid operators.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hi Lab HYDEE -->
+                <div class="card p-6 scroll-reveal cursor-pointer" onclick="toggleExpand(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(16, 185, 129, 0.2);">
+                                <i data-lucide="fuel" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium" style="color: var(--text-primary);">HYDEE Hydrogen Fuel Cell</h4>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Hi Lab</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-5 h-5 expand-icon transition-transform" style="color: var(--text-muted);"></i>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">Portable hydrogen fuel-cell power unit for mobility — addresses 3-hour charging frustration of lithium batteries.</p>
+                    <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">Hydrogen</span>
+                    <div class="expandable-content">
+                        <div class="pt-4 mt-4" style="border-top: 1px solid var(--border-subtle);">
+                            <p class="text-sm" style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Assessment:</strong> Hydrogen continues to be "the future" but infrastructure remains the blocker. Interesting for fleet/commercial use; consumer adoption still years away.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jackery Solar -->
+                <div class="card p-6 scroll-reveal cursor-pointer" onclick="toggleExpand(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(245, 158, 11, 0.2);">
+                                <i data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium" style="color: var(--text-primary);">SolarSaga Barrel Tile</h4>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Jackery</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-5 h-5 expand-icon transition-transform" style="color: var(--text-muted);"></i>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">World's first mass-produced multi-curved crystalline silicon photovoltaic tile using XBC solar cell technology.</p>
+                    <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">Solar</span>
+                    <div class="expandable-content">
+                        <div class="pt-4 mt-4" style="border-top: 1px solid var(--border-subtle);">
+                            <p class="text-sm" style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Assessment:</strong> Form factor innovation (curved tiles) rather than efficiency breakthrough. Useful for architectural integration but solar efficiency gains are marginal.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GeoWind -->
+                <div class="card p-6 scroll-reveal cursor-pointer" onclick="toggleExpand(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(139, 92, 246, 0.2);">
+                                <i data-lucide="wind" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium" style="color: var(--text-primary);">Grassroots Climate Grid</h4>
+                                <p class="text-xs" style="color: var(--text-tertiary);">GeoWind</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-5 h-5 expand-icon transition-transform" style="color: var(--text-muted);"></i>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">Decentralized wind-powered climate intelligence network with vertical-axis turbines serving as environmental sensor nodes.</p>
+                    <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">Wind + IoT</span>
+                    <div class="expandable-content">
+                        <div class="pt-4 mt-4" style="border-top: 1px solid var(--border-subtle);">
+                            <p class="text-sm" style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Assessment:</strong> Interesting dual-purpose concept (energy + sensing). Vertical-axis wind turbines have lower efficiency than horizontal; value is in the data network, not energy generation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Center Energy Question -->
+            <div class="p-6 rounded-xl scroll-reveal" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle);">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="server" class="w-5 h-5 text-blue-400 mt-1"></i>
+                    <div>
+                        <h4 class="font-medium mb-2" style="color: var(--text-primary);">Data Center Energy Generation?</h4>
+                        <p class="text-sm" style="color: var(--text-secondary);">Limited dedicated solutions. KEPCO's grid management and Rebellions' AI power optimization (Dopamine system — 10% of GPU energy for equivalent inference) were the closest. No dedicated data center energy projects announced. The AI infrastructure energy crisis wasn't prominently addressed at the consumer electronics show.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PILLAR 2: MOBILITY -->
+    <section id="mobility" class="py-20 px-6 scroll-mt-32" style="background: #0a0a0a;">
+        <div class="max-w-6xl mx-auto">
+            <!-- Section Header -->
+            <div class="flex items-center gap-4 mb-4 scroll-reveal">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.1));">
+                    <i data-lucide="car" class="w-7 h-7 text-blue-400"></i>
+                </div>
+                <div>
+                    <span class="text-sm font-mono tracking-wider text-blue-500">PILLAR 2</span>
+                    <h2 class="font-display text-h2 font-light" style="color: var(--text-primary);">Mobility</h2>
+                </div>
+            </div>
+            <p class="text-lg mb-12 max-w-3xl scroll-reveal" style="color: var(--text-secondary);">
+                Electric vehicles, micro-mobility solutions, and vehicle technology — incremental refinements dominate.
+            </p>
+
+            <!-- Best of Innovation: Strutt -->
+            <div class="mb-12 scroll-reveal">
+                <div class="p-8 rounded-2xl" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.03) 100%); border: 2px solid rgba(59, 130, 246, 0.4);">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(59, 130, 246, 0.2); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.4);">Best of Innovation</span>
+                    </div>
+                    <h3 class="text-2xl font-medium mb-2" style="color: var(--text-primary);">Strutt ev¹</h3>
+                    <p class="text-sm mb-4" style="color: var(--text-tertiary);">Strutt Pte. Ltd. (Singapore)</p>
+                    <p class="text-lg mb-6" style="color: var(--text-secondary);">
+                        Won Best of Innovation in Vehicle Tech, though specific breakthrough features were not prominently detailed beyond EV architecture.
+                    </p>
+                    <div class="pt-6" style="border-top: 1px solid rgba(59, 130, 246, 0.2);">
+                        <p class="text-sm" style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Assessment:</strong> Award recognition suggests CTA judges saw merit, but no clear differentiator vs established EV players. Market impact remains to be seen.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Micro-Mobility Section -->
+            <h3 class="text-lg font-medium mb-6 scroll-reveal" style="color: var(--text-primary);">Micro-Mobility Solutions</h3>
+            <div class="grid md:grid-cols-2 gap-6 mb-12">
+                <!-- Kamingo -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(16, 185, 129, 0.2);">
+                            <i data-lucide="bike" class="w-5 h-5 text-green-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium" style="color: var(--text-primary);">Kamingo E-Bike Conversion</h4>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Lufei Intelligent Innovation</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">Modular e-bike conversion system transforms standard bicycle into 750W electric-assist bike in 10 seconds. Smartphone-sized clip-on motor.</p>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">750W</span>
+                        <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(255,255,255,0.05); color: var(--text-tertiary);">10-sec install</span>
+                    </div>
+                    <p class="text-xs" style="color: var(--text-muted);"><strong>Verdict:</strong> Clever retrofit approach; not new tech but practical accessibility play.</p>
+                </div>
+
+                <!-- Ascender -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(245, 158, 11, 0.2);">
+                            <i data-lucide="accessibility" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium" style="color: var(--text-primary);">Ascender Stair-Climbing Platform</h4>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Safeway Inc.</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">AI-ready, actuator-enhanced mobility platform with elastic wheel system enabling obstacle climbing up to 130% of wheel height.</p>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">Accessibility</span>
+                        <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(255,255,255,0.05); color: var(--text-tertiary);">Urban/Off-road</span>
+                    </div>
+                    <p class="text-xs" style="color: var(--text-muted);"><strong>Verdict:</strong> Meaningful accessibility innovation; addresses real urban mobility pain points.</p>
+                </div>
+            </div>
+
+            <!-- Vehicle Tech -->
+            <h3 class="text-lg font-medium mb-6 scroll-reveal" style="color: var(--text-primary);">Vehicle Technology Highlights</h3>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="card p-5 scroll-reveal">
+                    <h4 class="font-medium mb-2" style="color: var(--text-primary);">LG AI In-Vehicle Solutions</h4>
+                    <p class="text-xs mb-3" style="color: var(--text-secondary);">Transparent OLED windshields, in-cabin sensing, on-device AI. Best of Innovation winner.</p>
+                    <span class="text-xs font-mono text-blue-400">Display + AI Integration</span>
+                </div>
+                <div class="card p-5 scroll-reveal">
+                    <h4 class="font-medium mb-2" style="color: var(--text-primary);">LG Better.Re Solution</h4>
+                    <p class="text-xs mb-3" style="color: var(--text-secondary);">Battery life management platform with degradation delay and anomaly prediction technology.</p>
+                    <span class="text-xs font-mono text-green-400">Battery Lifecycle</span>
+                </div>
+                <div class="card p-5 scroll-reveal">
+                    <h4 class="font-medium mb-2" style="color: var(--text-primary);">Oshkosh Volterra Electric</h4>
+                    <p class="text-xs mb-3" style="color: var(--text-secondary);">Battery-electric refuse and recycling vehicle for dense urban collection.</p>
+                    <span class="text-xs font-mono text-amber-400">Commercial EV</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PILLAR 3: CIRCULARITY -->
+    <section id="circularity" class="py-20 px-6 scroll-mt-32" style="background: #000;">
+        <div class="max-w-6xl mx-auto">
+            <!-- Section Header -->
+            <div class="flex items-center gap-4 mb-4 scroll-reveal">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(245, 158, 11, 0.1));">
+                    <i data-lucide="recycle" class="w-7 h-7 text-amber-400"></i>
+                </div>
+                <div>
+                    <span class="text-sm font-mono tracking-wider text-amber-500">PILLAR 3</span>
+                    <h2 class="font-display text-h2 font-light" style="color: var(--text-primary);">Circularity</h2>
+                </div>
+            </div>
+            <p class="text-lg mb-12 max-w-3xl scroll-reveal" style="color: var(--text-secondary);">
+                Sustainable materials, recycling solutions, and electronic waste management — more rhetoric than revolution.
+            </p>
+
+            <!-- Materials Innovation -->
+            <h3 class="text-lg font-medium mb-6 scroll-reveal" style="color: var(--text-primary);">Sustainable Materials</h3>
+            <div class="grid md:grid-cols-2 gap-6 mb-12">
+                <!-- ASUS Ceraluminum -->
+                <div class="card p-6 scroll-reveal cursor-pointer" onclick="toggleExpand(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(245, 158, 11, 0.2);">
+                                <i data-lucide="laptop" class="w-5 h-5 text-amber-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium" style="color: var(--text-primary);">Zenbook S14 Ceraluminum</h4>
+                                <p class="text-xs" style="color: var(--text-tertiary);">ASUS</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-5 h-5 expand-icon transition-transform" style="color: var(--text-muted);"></i>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">Proprietary ceramic-aluminum composite material claimed to be more sustainable and durable than traditional aluminum chassis.</p>
+                    <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">New Material</span>
+                    <div class="expandable-content">
+                        <div class="pt-4 mt-4" style="border-top: 1px solid var(--border-subtle);">
+                            <p class="text-sm" style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Assessment:</strong> Marketing-heavy claim. The actual sustainability benefit vs standard recycled aluminum needs independent verification. Interesting material science but not a category breakthrough.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eco-C CUBE -->
+                <div class="card p-6 scroll-reveal cursor-pointer" onclick="toggleExpand(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(16, 185, 129, 0.2);">
+                                <i data-lucide="package" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium" style="color: var(--text-primary);">Eco-C CUBE</h4>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Westec-Global</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-5 h-5 expand-icon transition-transform" style="color: var(--text-muted);"></i>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">High-strength structural blocks produced by directly extruding hard-to-recycle plastic waste (fishing nets, buoys, multilayer packaging).</p>
+                    <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">Plastic Upcycling</span>
+                    <div class="expandable-content">
+                        <div class="pt-4 mt-4" style="border-top: 1px solid var(--border-subtle);">
+                            <p class="text-sm" style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Assessment:</strong> Practical solution for problematic plastic waste streams. Construction-focused rather than consumer electronics, but addresses a real circular economy gap.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Luchrome Lusight -->
+                <div class="card p-6 scroll-reveal cursor-pointer" onclick="toggleExpand(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(139, 92, 246, 0.2);">
+                                <i data-lucide="monitor" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium" style="color: var(--text-primary);">Lusight Display Tech</h4>
+                                <p class="text-xs" style="color: var(--text-tertiary);">Luchrome</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-5 h-5 expand-icon transition-transform" style="color: var(--text-muted);"></i>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">Alternative display technology eliminating rare, non-recyclable metals (indium, gallium, silver) from electronic displays.</p>
+                    <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">Display Innovation</span>
+                    <div class="expandable-content">
+                        <div class="pt-4 mt-4" style="border-top: 1px solid var(--border-subtle);">
+                            <p class="text-sm" style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Assessment:</strong> Potentially significant if performance matches ITO-based displays. Rare earth elimination would be meaningful for supply chain and end-of-life recycling.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HP Digital Passport -->
+                <div class="card p-6 scroll-reveal cursor-pointer" onclick="toggleExpand(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(59, 130, 246, 0.2);">
+                                <i data-lucide="qr-code" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium" style="color: var(--text-primary);">HP Digital Passport</h4>
+                                <p class="text-xs" style="color: var(--text-tertiary);">HP Inc.</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-5 h-5 expand-icon transition-transform" style="color: var(--text-muted);"></i>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">QR-code platform providing access to device setup, support, and sustainability information tied to each product.</p>
+                    <span class="text-xs font-mono px-2 py-1 rounded" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">Traceability</span>
+                    <div class="expandable-content">
+                        <div class="pt-4 mt-4" style="border-top: 1px solid var(--border-subtle);">
+                            <p class="text-sm" style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Assessment:</strong> EU Digital Product Passport compliance play. Required by regulation in coming years — HP getting ahead. Useful for recycling chain but not innovation per se.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- E-Waste Solutions -->
+            <h3 class="text-lg font-medium mb-6 scroll-reveal" style="color: var(--text-primary);">E-Waste & Recycling Solutions</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- SolreBorn -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(245, 158, 11, 0.2);">
+                            <i data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium" style="color: var(--text-primary);">SolreBorn Mobile Recycling</h4>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Won Kwang S&T</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">Mobile on-site solar panel recycling system — addresses end-of-life solar panel waste problem.</p>
+                    <p class="text-xs" style="color: var(--text-muted);"><strong>Verdict:</strong> Addresses a coming tsunami (solar panel waste by 2030s). Mobile format enables decentralized recycling.</p>
+                </div>
+
+                <!-- Multi-Tron -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(16, 185, 129, 0.2);">
+                            <i data-lucide="trash-2" class="w-5 h-5 text-green-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium" style="color: var(--text-primary);">Multi-Tron AI Waste Sorting</h4>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Aetech</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">AI-powered waste sorting solution for multi-use facilities — compact enough for urban buildings.</p>
+                    <p class="text-xs" style="color: var(--text-muted);"><strong>Verdict:</strong> Decentralized sorting addresses real infrastructure gap. AI enables complexity at smaller scale.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PILLAR 4: NATURE -->
+    <section id="nature" class="py-20 px-6 scroll-mt-32" style="background: #0a0a0a;">
+        <div class="max-w-6xl mx-auto">
+            <!-- Section Header -->
+            <div class="flex items-center gap-4 mb-4 scroll-reveal">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(139, 92, 246, 0.1));">
+                    <i data-lucide="trees" class="w-7 h-7 text-purple-400"></i>
+                </div>
+                <div>
+                    <span class="text-sm font-mono tracking-wider text-purple-500">PILLAR 4</span>
+                    <h2 class="font-display text-h2 font-light" style="color: var(--text-primary);">Nature & Biodiversity</h2>
+                </div>
+            </div>
+            <p class="text-lg mb-12 max-w-3xl scroll-reveal" style="color: var(--text-secondary);">
+                Biodiversity monitoring, ecosystem management, and nature-positive technology — the thinnest presence at CES.
+            </p>
+
+            <!-- Honest Assessment -->
+            <div class="p-6 rounded-xl mb-12 scroll-reveal" style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.25);">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="info" class="w-5 h-5 text-purple-400 mt-1"></i>
+                    <div>
+                        <h4 class="font-medium mb-2" style="color: var(--text-primary);">Limited Presence</h4>
+                        <p class="text-sm" style="color: var(--text-secondary);">Biodiversity and ecosystem management had minimal dedicated representation at CES 2026. The consumer electronics focus means nature-positive technology remains a niche. What exists is mostly consumer-facing wildlife monitoring (bird feeders) rather than industrial biodiversity solutions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- What We Found -->
+            <h3 class="text-lg font-medium mb-6 scroll-reveal" style="color: var(--text-primary);">Available Solutions</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Birdfy -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-2 py-1 rounded text-xs font-medium" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">Best of Innovation</span>
+                    </div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(139, 92, 246, 0.2);">
+                            <i data-lucide="bird" class="w-5 h-5 text-purple-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium" style="color: var(--text-primary);">Birdfy Bath Pro</h4>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Netvue Technologies</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">AI-powered smart birdbath with species identification. All-season design consolidating multiple functions.</p>
+                    <p class="text-xs" style="color: var(--text-muted);"><strong>Scope:</strong> Backyard birdwatching, not ecosystem management.</p>
+                </div>
+
+                <!-- Smart Terra Sense -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(245, 158, 11, 0.2);">
+                            <i data-lucide="mountain" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium" style="color: var(--text-primary);">Smart Terra Sense</h4>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Smart E&C</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">AI-based debris flow monitoring system — environmental hazard detection rather than biodiversity per se.</p>
+                    <p class="text-xs" style="color: var(--text-muted);"><strong>Scope:</strong> Natural disaster prevention, tangential to biodiversity.</p>
+                </div>
+
+                <!-- SaeFarm -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(16, 185, 129, 0.2);">
+                            <i data-lucide="satellite" class="w-5 h-5 text-green-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium" style="color: var(--text-primary);">SaeFarm AI Satellite Monitor</h4>
+                            <p class="text-xs" style="color: var(--text-tertiary);">SaeFarm</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">Satellite-based farm monitoring using AI — agricultural focus with potential biodiversity monitoring applications.</p>
+                    <p class="text-xs" style="color: var(--text-muted);"><strong>Scope:</strong> AgTech with ecosystem overlap potential.</p>
+                </div>
+
+                <!-- GeoWind -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(59, 130, 246, 0.2);">
+                            <i data-lucide="wind" class="w-5 h-5 text-blue-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium" style="color: var(--text-primary);">GeoWind Environmental Sensors</h4>
+                            <p class="text-xs" style="color: var(--text-tertiary);">GeoWind</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">Wind turbines doubling as real-time environmental sensor nodes — climate data collection at scale.</p>
+                    <p class="text-xs" style="color: var(--text-muted);"><strong>Scope:</strong> Climate monitoring infrastructure with ecosystem data potential.</p>
+                </div>
+
+                <!-- Gardyn -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(16, 185, 129, 0.2);">
+                            <i data-lucide="sprout" class="w-5 h-5 text-green-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium" style="color: var(--text-primary);">Gardyn Studio 2</h4>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Gardyn</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">Indoor vertical farming system for home use — food production rather than biodiversity, but reduces agricultural footprint.</p>
+                    <p class="text-xs" style="color: var(--text-muted);"><strong>Scope:</strong> Consumer food tech with indirect land-use benefits.</p>
+                </div>
+
+                <!-- Instafarm -->
+                <div class="card p-6 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(245, 158, 11, 0.2);">
+                            <i data-lucide="leaf" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium" style="color: var(--text-primary);">Instafarm</h4>
+                            <p class="text-xs" style="color: var(--text-tertiary);">Instafarm</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-3" style="color: var(--text-secondary);">Automated indoor farming technology — similar to Gardyn in reducing conventional agriculture impact.</p>
+                    <p class="text-xs" style="color: var(--text-muted);"><strong>Scope:</strong> Food Tech category winner, not biodiversity-focused.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Summary -->
+    <section class="py-20 px-6" style="background: #000;">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12 scroll-reveal">
+                <h2 class="font-display text-h2 font-light mb-4" style="color: var(--text-primary);">The Bottom Line</h2>
+                <p class="text-lg" style="color: var(--text-secondary);">Your skepticism is warranted. Here's the reality check.</p>
+            </div>
+
+            <div class="space-y-6 scroll-reveal">
+                <div class="p-6 rounded-xl" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25);">
+                    <h3 class="font-medium text-green-400 mb-3">Genuine Breakthrough (1)</h3>
+                    <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Amprius 520 Wh/kg battery</strong> — This is the real deal. Silicon anode technology at production scale, nearly 2x energy density of standard batteries. This moves the needle.</p>
+                </div>
+
+                <div class="p-6 rounded-xl" style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25);">
+                    <h3 class="font-medium text-amber-400 mb-3">Meaningful Progress (4-5)</h3>
+                    <p style="color: var(--text-secondary);">Hydrogen fuel cells gaining traction, AI-powered energy/waste management, curved solar tiles, and e-waste recycling solutions show genuine advancement — but these are <strong style="color: var(--text-primary);">evolutionary steps</strong>, not category creation.</p>
+                </div>
+
+                <div class="p-6 rounded-xl" style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25);">
+                    <h3 class="font-medium text-red-400 mb-3">Marketing Over Substance (Most)</h3>
+                    <p style="color: var(--text-secondary);">The majority of "sustainable" products were <strong style="color: var(--text-primary);">existing products with sustainability messaging</strong> or minor material swaps. The -35% decline in Sustainability category awards reflects this: sustainability is becoming table stakes, not innovation frontier.</p>
+                </div>
+
+                <div class="p-6 rounded-xl" style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.25);">
+                    <h3 class="font-medium text-purple-400 mb-3">Notable Absence</h3>
+                    <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Data center energy</strong> — Despite AI's energy crisis being well-documented, CES had no dedicated solutions. <strong style="color: var(--text-primary);">Industrial biodiversity monitoring</strong> — Consumer electronics show remains consumer-focused; enterprise/industrial nature-tech largely absent.</p>
+                </div>
+            </div>
+
+            <!-- Return Link -->
+            <div class="mt-16 text-center scroll-reveal">
+                <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all hover:scale-105" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Back to Full Report</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6" style="background: #0a0a0a; border-top: 1px solid var(--border-subtle);">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <img src="https://red-peak.com/wp-content/uploads/2024/08/RedPeak-head-logo.png" alt="RedPeak" class="h-6 w-auto opacity-60">
+                <span class="text-sm" style="color: var(--text-muted);">RedPeak Strategic Intelligence</span>
+            </div>
+            <p class="text-sm" style="color: var(--text-muted);">CES 2026 Sustainability Deep Dive | January 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Toggle expand
+        function toggleExpand(element) {
+            const content = element.querySelector('.expandable-content');
+            const icon = element.querySelector('.expand-icon');
+            if (content) {
+                content.classList.toggle('expanded');
+                if (icon) {
+                    icon.style.transform = content.classList.contains('expanded') ? 'rotate(180deg)' : 'rotate(0)';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
